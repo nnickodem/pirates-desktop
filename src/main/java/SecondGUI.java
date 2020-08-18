@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-//switch this with NamePicker in MainFrame for other GUI
-
 public class SecondGUI extends JPanel {
 
     private JLabel label, label2, label3, label4, label5, label6, label7;
@@ -111,8 +109,7 @@ public class SecondGUI extends JPanel {
             ++kc;
             label6.setText(String.valueOf(kc));
         });
-
-        //TODO ask nathan
+        
         JButton but8 = new JButton("Back");
         constraints.gridx = 0;
         constraints.gridy = 0;
