@@ -7,11 +7,11 @@ public class NamePicker extends JPanel{
     private final JLabel label;
     private final JTextField textField;
     private String bossName;
-    private final MainFrame guiStorage;
+    private final MainFrame mainFrame;
 
-    public NamePicker(final MainFrame guiStorage){
+    public NamePicker(final MainFrame mainFrame){
 
-        this.guiStorage = guiStorage;
+        this.mainFrame = mainFrame;
 
         Icon icon = new ImageIcon("C:\\Users\\tomah\\Pictures\\TLOPO buttons\\track.PNG"); //../../../track.PNG
 
@@ -39,7 +39,7 @@ public class NamePicker extends JPanel{
 
     private void setBossName(final String bossName){
         this.bossName = bossName;
-        guiStorage.createSecondGUI(bossName);
+        mainFrame.createSecondGUI(bossName);
         //FileHandler.updateSave("legendary", "4", bossName);
     }
 }
