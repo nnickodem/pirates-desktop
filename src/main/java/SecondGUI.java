@@ -37,8 +37,6 @@ public class SecondGUI extends JPanel {
 
         Dimension dimension = new Dimension(100, 35);
 
-
-
         JButton but1 = new JButton("Crude");
         but1.setPreferredSize(dimension);
         constraints.gridx = 0;
@@ -49,8 +47,6 @@ public class SecondGUI extends JPanel {
             ++cr;
             label.setText(String.valueOf(cr));
         });
-
-
 
         JButton but2 = new JButton("Common");
         but2.setPreferredSize(dimension);
@@ -72,7 +68,6 @@ public class SecondGUI extends JPanel {
             label3.setText(String.valueOf(r));
         });
 
-
         JButton but4 = new JButton("Famed");
         but4.setPreferredSize(dimension);
         constraints.gridx = 0;
@@ -83,7 +78,6 @@ public class SecondGUI extends JPanel {
             label4.setText(String.valueOf(f));
         });
 
-
         JButton but5 = new JButton("Legendary");
         but5.setPreferredSize(dimension);
         constraints.gridx = 0;
@@ -93,7 +87,6 @@ public class SecondGUI extends JPanel {
             ++l;
             label5.setText(String.valueOf(l));
         });
-
 
         JButton but6 = new JButton("-");
         constraints.gridx = 0;
@@ -126,9 +119,6 @@ public class SecondGUI extends JPanel {
         add(but8, constraints);
         but8.addActionListener((ActionEvent e) -> guiStorage.createIntroScreen());
 
-
-
-
         label7 = new JLabel("Kills");
         label7.setPreferredSize(dimension);
         label7.setHorizontalAlignment(JLabel.CENTER);
@@ -137,7 +127,6 @@ public class SecondGUI extends JPanel {
         constraints.gridy = 0;
         add(label7, constraints);
 
-
         label = new JLabel();
         label.setPreferredSize(dimension);
         label.setHorizontalAlignment(JLabel.CENTER);
@@ -145,7 +134,6 @@ public class SecondGUI extends JPanel {
         constraints.gridx = 1;
         constraints.gridy = 2;
         add(label, constraints);
-
 
         label2 = new JLabel();
         label2.setPreferredSize(dimension);
@@ -186,9 +174,6 @@ public class SecondGUI extends JPanel {
         constraints.gridx = 1;
         constraints.gridy = 1;
         add(label6, constraints);
-
-
-
     }
 
     public void killIncrement(){
@@ -196,6 +181,4 @@ public class SecondGUI extends JPanel {
         label6.setText(String.valueOf(kc));
 
     }
-
-
 }

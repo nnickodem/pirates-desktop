@@ -1,13 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 
-
 public class MainFrame extends JFrame{
 
     private JPanel currentPanel;
 
-    public MainFrame(){
-
+    public MainFrame() {
         setPreferredSize(new Dimension(350,400));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("TLOPO Loot Tracker");
@@ -16,10 +14,9 @@ public class MainFrame extends JFrame{
         createIntroScreen();
         setResizable(false);
         setAlwaysOnTop(true);
-
     }
 
-    public void createIntroScreen(){
+    public void createIntroScreen() {
 
         NamePicker namePicker = new NamePicker(this);
 
@@ -34,7 +31,6 @@ public class MainFrame extends JFrame{
         setContentPane(namePicker);
         revalidate();
         currentPanel = namePicker;
-
 
     }
 
@@ -55,8 +51,4 @@ public class MainFrame extends JFrame{
         currentPanel = secondGUI;
 
     }
-
-
-
-
 }

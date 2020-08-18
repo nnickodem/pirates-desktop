@@ -9,8 +9,6 @@ public class ShiftListener implements NativeKeyListener {
         this.secondGUI = secondGUI;
     }
 
-
-
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
         //do nothing
     }
@@ -20,8 +18,6 @@ public class ShiftListener implements NativeKeyListener {
             System.out.println("do shift things");
             secondGUI.killIncrement();
         }
-
-
     }
 
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {

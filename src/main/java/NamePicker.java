@@ -35,16 +35,11 @@ public class NamePicker extends JPanel{
         add(textField);
         add(button);
 
-
-
     }
-
 
     private void setBossName(final String bossName){
         this.bossName = bossName;
         guiStorage.createSecondGUI(bossName);
         //FileHandler.updateSave("legendary", "4", bossName);
     }
-
-
 }
