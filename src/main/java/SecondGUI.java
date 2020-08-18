@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 public class SecondGUI extends JPanel {
 
     private JLabel label, label2, label3, label4, label5, label6, label7;
-    private MainFrame guiStorage;
+    private MainFrame mainFrame;
     public int f = 0;
     public int l = 0;
     public int cr = 0;
@@ -19,7 +19,7 @@ public class SecondGUI extends JPanel {
 
     //TODO show me faster way to add new stuff
 
-    public SecondGUI(final MainFrame guiStorage, final String bossName) {
+    public SecondGUI(final MainFrame mainFrame, final String bossName) {
 
         try {
             GlobalScreen.registerNativeHook();
@@ -28,9 +28,9 @@ public class SecondGUI extends JPanel {
         }
         GlobalScreen.addNativeKeyListener(new ShiftListener(this));
 
-        this.guiStorage = guiStorage;
+        this.mainFrame = mainFrame;
 
-        guiStorage.setTitle("TLOPO Loot Tracker - " + bossName);
+        mainFrame.setTitle("TLOPO Loot Tracker - " + bossName);
 
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -117,7 +117,7 @@ public class SecondGUI extends JPanel {
         constraints.gridx = 0;
         constraints.gridy = 0;
         add(but8, constraints);
-        but8.addActionListener((ActionEvent e) -> guiStorage.createIntroScreen());
+        but8.addActionListener((ActionEvent e) -> mainFrame.createIntroScreen());
 
         label7 = new JLabel("Kills");
         label7.setPreferredSize(dimension);
