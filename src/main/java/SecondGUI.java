@@ -1,7 +1,4 @@
 import org.jnativehook.GlobalScreen;
-import org.jnativehook.mouse.NativeMouseListener;
-import org.jnativehook.mouse.NativeMouseMotionListener;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -177,9 +174,8 @@ public class SecondGUI extends JPanel {
 
     }
 
-    public void killIncrement(){
+    public void killIncrement() {
         ++kc;
         label6.setText(String.valueOf(kc));
-
     }
 }

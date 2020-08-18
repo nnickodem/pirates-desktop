@@ -14,7 +14,7 @@ public class ShiftListener implements NativeKeyListener {
     }
 
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-        if(nativeKeyEvent.getKeyCode() == 42) {
+        if(nativeKeyEvent.getKeyCode() == 42 || nativeKeyEvent.getKeyCode() == 3638) {
             System.out.println("do shift things");
             secondGUI.killIncrement();
         }
@@ -23,5 +23,4 @@ public class ShiftListener implements NativeKeyListener {
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
         //do nothing
     }
-
 }
