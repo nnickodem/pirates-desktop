@@ -1,4 +1,6 @@
 import org.jnativehook.GlobalScreen;
+import org.jnativehook.mouse.NativeMouseListener;
+import org.jnativehook.mouse.NativeMouseMotionListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +17,7 @@ public class SecondGUI extends JPanel {
     public int r = 0;
     private int kc = 0;
 
-    //TODO show me faster way to add new stuff
+    //TODO for loops
 
     public SecondGUI(final MainFrame mainFrame, final String bossName) {
 
@@ -26,9 +28,10 @@ public class SecondGUI extends JPanel {
         }
         GlobalScreen.addNativeKeyListener(new ShiftListener(this));
 
+
         this.mainFrame = mainFrame;
 
-        mainFrame.setTitle("TLOPO Loot Tracker - " + bossName);
+        mainFrame.setTitle("Loot Tracker - " + bossName);
 
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -116,10 +119,10 @@ public class SecondGUI extends JPanel {
         add(but8, constraints);
         but8.addActionListener((ActionEvent e) -> mainFrame.createIntroScreen());
 
-        label7 = new JLabel("Kills");
+        label7 = new JLabel(" Kills:");
         label7.setPreferredSize(dimension);
         label7.setHorizontalAlignment(JLabel.CENTER);
-        label7.setFont(new Font("Helvetica", Font.BOLD, 46));
+        label7.setFont(new Font("Helvetica", Font.BOLD, 36));
         constraints.gridx = 1;
         constraints.gridy = 0;
         add(label7, constraints);
@@ -171,6 +174,7 @@ public class SecondGUI extends JPanel {
         constraints.gridx = 1;
         constraints.gridy = 1;
         add(label6, constraints);
+
     }
 
     public void killIncrement(){

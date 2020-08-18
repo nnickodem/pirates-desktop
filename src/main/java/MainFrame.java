@@ -34,7 +34,7 @@ public class MainFrame extends JFrame{
 
     }
 
-    public void createSecondGUI(final String bossName) {
+    public void createSecondGUI(final String bossName, final String user) {
 
         SecondGUI secondGUI = new SecondGUI(this, bossName);
 
