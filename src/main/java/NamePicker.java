@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 
-
 public class NamePicker extends JPanel{
 
     private final JLabel label, userName;
