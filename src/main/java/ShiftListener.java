@@ -23,4 +23,5 @@ public class ShiftListener implements NativeKeyListener {
     public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
         //do nothing
     }
+
 }
