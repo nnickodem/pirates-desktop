@@ -1,11 +1,20 @@
-import javax.swing.*;
-import java.awt.*;
+package gui;
+
+import ResourceHandlers.LootDAO;
+import dto.Boss;
+import java.awt.Dimension;
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class MainFrame extends JFrame{
 
     private JPanel currentPanel;
+    private List<Boss> bosses;
 
     public MainFrame() {
+        //here for convenience, probably a better spot to move to later
+        bosses = LootDAO.getBosses();
         setPreferredSize(new Dimension(350,400));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("TLOPO Loot Tracker");
