@@ -1,5 +1,16 @@
-import javax.swing.*;
-import java.awt.*;
+package gui;
+
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 
 public class NamePicker extends JPanel{
 
@@ -15,7 +26,7 @@ public class NamePicker extends JPanel{
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
-        Icon icon = new ImageIcon("C:\\Users\\tomah\\Pictures\\TLOPO buttons\\track.PNG"); //../../../track.PNG
+        Icon icon = new ImageIcon("resources/track.PNG");
 
         userName = new JLabel("Username: ");
         userName.setPreferredSize(new Dimension(100,40));
@@ -58,7 +69,7 @@ public class NamePicker extends JPanel{
         this.bossName = bossName;
         this.user = user;
         mainFrame.createSecondGUI(bossName, user);
-        //FileHandler.updateSave("legendary", "4", bossName);
+        //ResourceHandlers.FileHandler.updateSave("legendary", "4", bossName);
     }
 
 }

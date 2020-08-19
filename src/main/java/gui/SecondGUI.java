@@ -1,7 +1,17 @@
-import org.jnativehook.GlobalScreen;
-import javax.swing.*;
-import java.awt.*;
+package gui;
+import ResourceHandlers.ShiftListener;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import org.jnativehook.GlobalScreen;
+
+//switch this with gui.NamePicker in gui.MainFrame for other GUI
 
 public class SecondGUI extends JPanel {
 
