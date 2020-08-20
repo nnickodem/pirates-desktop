@@ -2,7 +2,8 @@ package gui;
 
 import ResourceHandlers.LootDAO;
 import dto.Boss;
-import java.awt.Dimension;
+
+import java.awt.*;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,6 +12,7 @@ public class MainFrame extends JFrame{
 
     private JPanel currentPanel;
     private List<Boss> bosses;
+    private String user;
 
     public MainFrame() {
         //here for convenience, probably a better spot to move to later
@@ -22,12 +24,20 @@ public class MainFrame extends JFrame{
         setVisible(true);
         createIntroScreen();
         setResizable(false);
+
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+        Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
+        int x = (int) rect.getMaxX() - getWidth();
+        int y =(int) (getWidth() - getWidth() * .275) ;
+        setLocation(x, y);
+
         setAlwaysOnTop(true);
     }
 
     public void createIntroScreen() {
 
-        NamePicker namePicker = new NamePicker(this);
+        NamePicker namePicker = new NamePicker(this, user, bosses);
 
         remove(namePicker);
 
@@ -46,6 +56,8 @@ public class MainFrame extends JFrame{
     public void createSecondGUI(final String bossName, final String user) {
 
         SecondGUI secondGUI = new SecondGUI(this, bossName);
+
+        this.user = user;
 
         remove(secondGUI);
 
