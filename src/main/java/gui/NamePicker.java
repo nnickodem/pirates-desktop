@@ -1,9 +1,10 @@
 package gui;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import dto.Boss;
+import org.apache.commons.lang3.StringUtils;
+
+import java.awt.*;
+import java.util.List;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,13 +15,13 @@ import javax.swing.JTextField;
 
 public class NamePicker extends JPanel{
 
-    private final JLabel label, userName;
-    private final JTextField textField, textField2;
-    private String bossName, user;
+    private final JLabel label, userName, bossError;
+    private final JTextField bossField, userField;
     private final MainFrame mainFrame;
+    private final List<Boss> bosses;
 
-    public NamePicker(final MainFrame mainFrame){
-
+    public NamePicker(final MainFrame mainFrame, final String user, final List<Boss> bosses){
+        this.bosses = bosses;
         this.mainFrame = mainFrame;
 
         setLayout(new GridBagLayout());
@@ -36,11 +37,15 @@ public class NamePicker extends JPanel{
         constraints.gridy = 0;
         add(userName, constraints);
 
-        textField2 = new JTextField();
-        textField2.setPreferredSize(new Dimension(100,30));
+        userField = new JTextField();
+        userField.setPreferredSize(new Dimension(100,30));
+        if (StringUtils.isNotBlank(user)){
+            userField.setText(user);
+            userField.setEditable(false);
+        }
         constraints.gridx = 1;
         constraints.gridy = 0;
-        add(textField2, constraints);
+        add(userField, constraints);
 
         label = new JLabel("Boss: ");
         label.setPreferredSize(new Dimension(100,40));
@@ -49,26 +54,37 @@ public class NamePicker extends JPanel{
         constraints.gridy = 1;
         add(label, constraints);
 
-        textField = new JTextField();
-        textField.setPreferredSize(new Dimension(100,30));
-        textField.addActionListener(e -> setBossName(textField.getText(),textField2.getText()));
+        bossField = new JTextField();
+        bossField.setPreferredSize(new Dimension(100,30));
+        bossField.addActionListener(e -> setBossName(bossField.getText(),userField.getText()));
         constraints.gridx = 1;
         constraints.gridy = 1;
-        add(textField, constraints);
+        add(bossField, constraints);
 
         JButton button = new JButton(icon);
         button.setPreferredSize(new Dimension(120,45));
-        button.addActionListener(e -> setBossName(textField.getText(), textField2.getText()));
+        button.addActionListener(e -> setBossName(bossField.getText(), userField.getText()));
         constraints.gridx = 1;
         constraints.gridy = 2;
         add(button, constraints);
 
+        bossError = new JLabel("Does not match boss list");
+        bossError.setVisible(false);
+        bossError.setFont(new Font("Didot", Font.BOLD, 12));
+        constraints.gridx = 0;
+        constraints.gridy = 3;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        add(bossError, constraints);
+
+
     }
 
     private void setBossName(final String bossName, final String user){
-        this.bossName = bossName;
-        this.user = user;
-        mainFrame.createSecondGUI(bossName, user);
+        if (bosses.stream().map(b -> b.getName()).anyMatch(n -> n.equalsIgnoreCase(bossName))){
+            mainFrame.createSecondGUI(bossName, user);
+        }else{
+            bossError.setVisible(true);
+        }
         //ResourceHandlers.FileHandler.updateSave("legendary", "4", bossName);
     }
 
