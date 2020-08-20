@@ -105,9 +105,6 @@ public class SecondGUI extends JPanel {
             {
                 --kc;
                 label6.setText(String.valueOf(kc));
-            }else
-            {
-                kc = 0;
             }
         });
 
@@ -125,6 +122,72 @@ public class SecondGUI extends JPanel {
         constraints.gridy = 0;
         add(but8, constraints);
         but8.addActionListener((ActionEvent e) -> mainFrame.createIntroScreen());
+
+        JButton but9 = new JButton("-");
+        constraints.gridx = 2;
+        constraints.gridy = 2;
+        add(but9, constraints);
+        but9.addActionListener((ActionEvent e) -> {
+            if (cr >= 1){
+                --cr;
+                label.setText(String.valueOf(cr));
+            }
+        });
+
+        JButton but10 = new JButton("-");
+        constraints.gridx = 2;
+        constraints.gridy = 3;
+        add(but10, constraints);
+        but10.addActionListener((ActionEvent e) -> {
+            if (co >= 1){
+                --co;
+                label2.setText(String.valueOf(co));
+            }
+        });
+
+        JButton but11 = new JButton("-");
+        constraints.gridx = 2;
+        constraints.gridy = 4;
+        add(but11, constraints);
+        but11.addActionListener((ActionEvent e) -> {
+            if (r >= 1){
+                --r;
+                label3.setText(String.valueOf(r));
+            }
+        });
+
+        JButton but12 = new JButton("-");
+        constraints.gridx = 2;
+        constraints.gridy = 5;
+        add(but12, constraints);
+        but12.addActionListener((ActionEvent e) -> {
+            if (f >= 1){
+                --f;
+                label4.setText(String.valueOf(f));
+            }
+        });
+
+        JButton but13 = new JButton("-");
+        constraints.gridx = 2;
+        constraints.gridy = 6;
+        add(but13, constraints);
+        but13.addActionListener((ActionEvent e) -> {
+            if (l >= 1){
+                --l;
+                label5.setText(String.valueOf(l));
+            }
+        });
+
+        JButton submit = new JButton("Save");
+        constraints.gridx = 2;
+        constraints.gridy = 0;
+        add(submit, constraints);
+        submit.addActionListener((ActionEvent e) -> {
+            //save session... this tried writing a non existent save file and froze whole program
+            //ResourceHandlers.FileHandler.updateSave("legendary", "4", bossName);
+        });
+
+
 
         label7 = new JLabel(" Kills:");
         label7.setPreferredSize(dimension);
