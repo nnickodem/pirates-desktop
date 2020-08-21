@@ -17,9 +17,14 @@ public class ShiftListener implements NativeKeyListener {
     }
 
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
+
         if(nativeKeyEvent.getKeyCode() == 42 || nativeKeyEvent.getKeyCode() == 3638) {
             System.out.println("do shift things");
             secondGUI.killIncrement();
+        }
+        if(nativeKeyEvent.getKeyCode() == 56){
+            System.out.println("reversing shift things");
+            secondGUI.killDecrement();
         }
     }
 

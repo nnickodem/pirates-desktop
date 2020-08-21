@@ -28,8 +28,8 @@ public class MainFrame extends JFrame{
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
         Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
-        int x = (int) rect.getMaxX() - getWidth();
-        int y =(int) (getWidth() - getWidth() * .275) ;
+        int x = (int) rect.getMinX();
+        int y =(int) (getWidth() - getWidth() * .3) ;
         setLocation(x, y);
 
         setAlwaysOnTop(true);
@@ -53,9 +53,9 @@ public class MainFrame extends JFrame{
 
     }
 
-    public void createSecondGUI(final String user, final Boss boss) {
+    public void createSecondGUI(final String user, final Boss boss, final boolean shiftToggle) {
 
-        SecondGUI secondGUI = new SecondGUI(this, user, boss);
+        SecondGUI secondGUI = new SecondGUI(this, user, boss, shiftToggle);
 
         this.user = user;
 

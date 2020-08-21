@@ -6,13 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.awt.*;
 import java.util.List;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
+import javax.swing.*;
+import javax.swing.plaf.BorderUIResource;
 
 public class NamePicker extends JPanel{
 
@@ -20,6 +15,7 @@ public class NamePicker extends JPanel{
     private final JTextField bossField, userField;
     private final MainFrame mainFrame;
     private final List<Boss> bosses;
+    private boolean shiftToggle = true;
 
     public NamePicker(final MainFrame mainFrame, final String user, final List<Boss> bosses){
         this.bosses = bosses;
@@ -71,19 +67,36 @@ public class NamePicker extends JPanel{
 
         bossError = new JLabel("Does not match boss list");
         bossError.setVisible(false);
-        bossError.setFont(new Font("Didot", Font.BOLD, 12));
+        bossError.setFont(new Font("Didot", Font.BOLD, 22));
+        bossError.setForeground(Color.red);
+        constraints.gridwidth = 2;
         constraints.gridx = 0;
         constraints.gridy = 3;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         add(bossError, constraints);
 
+        ButtonGroup group = new ButtonGroup();
+        JRadioButton yesShift = new JRadioButton("Use shift/alt to alter killcount");
+        JRadioButton noShift = new JRadioButton("Do not use shift/alt");
+        group.add(yesShift);
+        group.add(noShift);
 
+        yesShift.addActionListener(e -> shiftToggle = true);
+        yesShift.setSelected(true);
+        constraints.gridx = 0;
+        constraints.gridy = 4;
+        add(yesShift, constraints);
+
+        noShift.addActionListener(e -> shiftToggle = false);
+        constraints.gridx = 0;
+        constraints.gridy = 5;
+        add(noShift, constraints);
     }
 
     private void setBossName(final String bossName, final String user){
         Optional<Boss> boss = bosses.stream().filter(b -> b.getName().equalsIgnoreCase(bossName)).findAny();
         if (boss.isPresent()){
-            mainFrame.createSecondGUI(user, boss.get());
+            mainFrame.createSecondGUI(user, boss.get(), shiftToggle);
         }else{
             bossError.setVisible(true);
         }

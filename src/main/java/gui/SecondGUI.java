@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
 
 //switch this with gui.NamePicker in gui.MainFrame for other GUI
 
@@ -25,15 +26,16 @@ public class SecondGUI extends JPanel {
 
     //TODO for loops
 
-    public SecondGUI(final MainFrame mainFrame, final String user, final Boss boss) {
+    public SecondGUI(final MainFrame mainFrame, final String user, final Boss boss, final boolean shiftToggle) {
 
-        try {
-            GlobalScreen.registerNativeHook();
-        } catch (Exception e) {
-            System.out.println("failed to register hook");
+        if (shiftToggle){
+            try {
+                GlobalScreen.registerNativeHook();
+            } catch (Exception e) {
+                System.out.println("failed to register hook");
+            }
+            GlobalScreen.addNativeKeyListener(new ShiftListener(this));
         }
-        GlobalScreen.addNativeKeyListener(new ShiftListener(this));
-
 
         this.mainFrame = mainFrame;
         loot = FileHandler.getSave(boss.getName());
@@ -46,11 +48,11 @@ public class SecondGUI extends JPanel {
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
-        Dimension dimension = new Dimension(100, 35);
+        Dimension dimension = new Dimension(90, 35);
 
         JButton crudeInc = new JButton("Crude");
         crudeInc.setPreferredSize(dimension);
-        constraints.gridx = 0;
+        constraints.gridx = 2;
         constraints.gridy = 2;
         constraints.insets = new Insets(5,3,5,3);
         add(crudeInc, constraints);
@@ -60,7 +62,7 @@ public class SecondGUI extends JPanel {
 
         JButton commonInc = new JButton("Common");
         commonInc.setPreferredSize(dimension);
-        constraints.gridx = 0;
+        constraints.gridx = 2;
         constraints.gridy = 3;
         add(commonInc, constraints);
         commonInc.addActionListener((ActionEvent e) -> {
@@ -69,7 +71,7 @@ public class SecondGUI extends JPanel {
 
         JButton rareInc = new JButton("Rare");
         rareInc.setPreferredSize(dimension);
-        constraints.gridx = 0;
+        constraints.gridx = 2;
         constraints.gridy = 4;
         add(rareInc, constraints);
         rareInc.addActionListener((ActionEvent e) -> {
@@ -78,7 +80,7 @@ public class SecondGUI extends JPanel {
 
         JButton famedInc = new JButton("Famed");
         famedInc.setPreferredSize(dimension);
-        constraints.gridx = 0;
+        constraints.gridx = 2;
         constraints.gridy = 5;
         add(famedInc,constraints);
         famedInc.addActionListener((ActionEvent e) -> {
@@ -87,7 +89,7 @@ public class SecondGUI extends JPanel {
 
         JButton legendaryInc = new JButton("Legendary");
         legendaryInc.setPreferredSize(dimension);
-        constraints.gridx = 0;
+        constraints.gridx = 2;
         constraints.gridy = 6;
         add(legendaryInc, constraints);
         legendaryInc.addActionListener((ActionEvent e) -> {
@@ -97,6 +99,7 @@ public class SecondGUI extends JPanel {
         JButton kcDec = new JButton("-");
         constraints.gridx = 0;
         constraints.gridy = 1;
+        kcDec.setPreferredSize(new Dimension(80,30));
         add(kcDec, constraints);
         kcDec.addActionListener((ActionEvent e) -> {
             kcLabel.setText(String.valueOf(loot.alterKillCount(-1)));
@@ -105,6 +108,7 @@ public class SecondGUI extends JPanel {
         JButton kcInc = new JButton("+");
         constraints.gridx = 2;
         constraints.gridy = 1;
+        kcInc.setPreferredSize(new Dimension(85,30));
         add(kcInc, constraints);
         kcInc.addActionListener((ActionEvent e) -> {
             kcLabel.setText(String.valueOf(loot.alterKillCount(1)));
@@ -114,10 +118,17 @@ public class SecondGUI extends JPanel {
         constraints.gridx = 0;
         constraints.gridy = 0;
         add(backButton, constraints);
-        backButton.addActionListener((ActionEvent e) -> mainFrame.createIntroScreen());
+        backButton.addActionListener((ActionEvent e) -> {
+            mainFrame.createIntroScreen();
+            try {
+                GlobalScreen.unregisterNativeHook();
+            } catch (NativeHookException nativeHookException) {
+                nativeHookException.printStackTrace();
+            }
+        });
 
         JButton crudeDec = new JButton("-");
-        constraints.gridx = 2;
+        constraints.gridx = 0;
         constraints.gridy = 2;
         add(crudeDec, constraints);
         crudeDec.addActionListener((ActionEvent e) -> {
@@ -125,7 +136,7 @@ public class SecondGUI extends JPanel {
         });
 
         JButton commonDec = new JButton("-");
-        constraints.gridx = 2;
+        constraints.gridx = 0;
         constraints.gridy = 3;
         add(commonDec, constraints);
         commonDec.addActionListener((ActionEvent e) -> {
@@ -133,7 +144,7 @@ public class SecondGUI extends JPanel {
         });
 
         JButton rareDec = new JButton("-");
-        constraints.gridx = 2;
+        constraints.gridx = 0;
         constraints.gridy = 4;
         add(rareDec, constraints);
         rareDec.addActionListener((ActionEvent e) -> {
@@ -141,7 +152,7 @@ public class SecondGUI extends JPanel {
         });
 
         JButton famedDec = new JButton("-");
-        constraints.gridx = 2;
+        constraints.gridx = 0;
         constraints.gridy = 5;
         add(famedDec, constraints);
         famedDec.addActionListener((ActionEvent e) -> {
@@ -149,7 +160,7 @@ public class SecondGUI extends JPanel {
         });
 
         JButton legendaryDec = new JButton("-");
-        constraints.gridx = 2;
+        constraints.gridx = 0;
         constraints.gridy = 6;
         add(legendaryDec, constraints);
         legendaryDec.addActionListener((ActionEvent e) -> {
@@ -168,7 +179,7 @@ public class SecondGUI extends JPanel {
             }
         });
 
-        killsText = new JLabel(" Kills:");
+        killsText = new JLabel("Kills");
         killsText.setPreferredSize(dimension);
         killsText.setHorizontalAlignment(JLabel.CENTER);
         killsText.setFont(new Font("Helvetica", Font.BOLD, 36));
@@ -232,5 +243,8 @@ public class SecondGUI extends JPanel {
 
     public void killIncrement() {
         kcLabel.setText(String.valueOf(loot.alterKillCount(1)));
+    }
+    public void killDecrement(){
+        kcLabel.setText(String.valueOf(loot.alterKillCount(-1)));
     }
 }
