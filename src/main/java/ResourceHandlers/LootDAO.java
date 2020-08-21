@@ -56,20 +56,25 @@ public class LootDAO {
         return bosses;
     }
 
-    public static void addLoot(final Loot loot) {
+    public static boolean addLoot(final Loot loot) {
+        boolean success = false;
         try {
             try {
-                addLoot(loot, publicIP);
+                success = addLoot(loot, publicIP);
             } catch (final ConnectException c) {
                 logger.log(Level.WARNING, "error on public ip, attempting private ip");
-                addLoot(loot, privateIP);
+                success = addLoot(loot, privateIP);
             }
         } catch (final Exception e) {
             logger.log(Level.SEVERE, "failed to add loot", e);
         }
+        if(!success) {
+            logger.log(Level.SEVERE, "failed to add loot, bad response from service");
+        }
+        return success;
     }
 
-    private static void addLoot(final Loot loot, final String host) throws Exception {
+    private static boolean addLoot(final Loot loot, final String host) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -79,5 +84,6 @@ public class LootDAO {
                 .build();
 
         HttpResponse<Void> response = httpClient.send(request, BodyHandlers.discarding());
+        return response.statusCode() == 200;
     }
 }

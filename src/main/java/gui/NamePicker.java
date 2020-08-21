@@ -1,6 +1,7 @@
 package gui;
 
 import dto.Boss;
+import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 
 import java.awt.*;
@@ -80,12 +81,12 @@ public class NamePicker extends JPanel{
     }
 
     private void setBossName(final String bossName, final String user){
-        if (bosses.stream().map(b -> b.getName()).anyMatch(n -> n.equalsIgnoreCase(bossName))){
-            mainFrame.createSecondGUI(bossName, user);
+        Optional<Boss> boss = bosses.stream().filter(b -> b.getName().equalsIgnoreCase(bossName)).findAny();
+        if (boss.isPresent()){
+            mainFrame.createSecondGUI(user, boss.get());
         }else{
             bossError.setVisible(true);
         }
-        //ResourceHandlers.FileHandler.updateSave("legendary", "4", bossName);
     }
 
 }
