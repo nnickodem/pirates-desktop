@@ -4,14 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.Boss;
 import dto.Loot;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ConnectException;
-import java.net.URI;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -76,14 +73,22 @@ public class LootDAO {
 
     private static boolean addLoot(final Loot loot, final String host) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://" + host + ":8080/loot"))
-                .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(loot)))
-                .header("Content-type", "application/json")
-                .build();
 
-        HttpResponse<Void> response = httpClient.send(request, BodyHandlers.discarding());
-        return response.statusCode() == 200;
+        byte[] out = objectMapper.writeValueAsBytes(loot);
+        int length = out.length;
+
+        URL url = new URL("http://" + host + ":8080/loot");
+        URLConnection con = url.openConnection();
+        HttpURLConnection http = (HttpURLConnection)con;
+        http.setFixedLengthStreamingMode(length);
+        http.setRequestMethod("POST"); // PUT is another valid option
+        http.setDoOutput(true);
+        http.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+        http.connect();
+        try(OutputStream os = http.getOutputStream()) {
+            os.write(out);
+        }
+
+        return 200 == http.getResponseCode();
     }
 }
