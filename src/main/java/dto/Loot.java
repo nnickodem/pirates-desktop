@@ -1,21 +1,38 @@
 package dto;
 
+import ResourceHandlers.FileHandler;
+
 public class Loot {
 
     private String user;
     private Integer bossId;
-    private Integer killCount;
-    private Integer crudeCount;
-    private Integer commonCount;
-    private Integer rareCount;
-    private Integer famedCount;
-    private Integer legendaryCount;
+    private String bossName;
+    private Integer killCount = 0;
+    private Integer crudeCount = 0;
+    private Integer commonCount = 0;
+    private Integer rareCount = 0;
+    private Integer famedCount = 0;
+    private Integer legendaryCount = 0;
+
+    public Loot() {
+
+    }
+
+    public Loot(final int killCount, final int crudeCount, final int commonCount, final int rareCount,
+                     final int famedCount, final int legendaryCount) {
+        this.killCount = killCount;
+        this.crudeCount = crudeCount;
+        this.commonCount = commonCount;
+        this.rareCount = rareCount;
+        this.famedCount = famedCount;
+        this.legendaryCount = legendaryCount;
+    }
 
     public String getUser() {
         return user;
     }
 
-    public void setUser(String user) {
+    public void setUser(final String user) {
         this.user = user;
     }
 
@@ -23,55 +40,80 @@ public class Loot {
         return bossId;
     }
 
-    public void setBossId(Integer bossId) {
+    public void setBossId(final Integer bossId) {
         this.bossId = bossId;
+    }
+
+    public String getBossName() {
+        return bossName;
+    }
+
+    public void setBossName(final String bossName) {
+        this.bossName = bossName;
     }
 
     public Integer getKillCount() {
         return killCount;
     }
 
-    public void setKillCount(Integer killCount) {
-        this.killCount = killCount;
+    public Integer alterKillCount(final Integer change) {
+        killCount = alter(killCount, change, "kills");
+        return killCount;
     }
 
     public Integer getCrudeCount() {
         return crudeCount;
     }
 
-    public void setCrudeCount(Integer crudeCount) {
-        this.crudeCount = crudeCount;
+    public Integer alterCrudeCount(final Integer change) {
+        crudeCount = alter(crudeCount, change, "crude");
+        return crudeCount;
     }
 
     public Integer getCommonCount() {
         return commonCount;
     }
 
-    public void setCommonCount(Integer commonCount) {
-        this.commonCount = commonCount;
+    public Integer alterCommonCount(final Integer change) {
+        commonCount = alter(commonCount, change, "common");
+        return commonCount;
     }
 
     public Integer getRareCount() {
         return rareCount;
     }
 
-    public void setRareCount(Integer rareCount) {
-        this.rareCount = rareCount;
+    public Integer alterRareCount(final Integer change) {
+        rareCount = alter(rareCount, change, "rare");
+        return rareCount;
     }
 
     public Integer getFamedCount() {
         return famedCount;
     }
 
-    public void setFamedCount(Integer famedCount) {
-        this.famedCount = famedCount;
+    public Integer alterFamedCount(final Integer change) {
+        famedCount = alter(famedCount, change, "famed");
+        return famedCount;
     }
 
     public Integer getLegendaryCount() {
         return legendaryCount;
     }
 
-    public void setLegendaryCount(Integer legendaryCount) {
-        this.legendaryCount = legendaryCount;
+    public Integer alterLegendaryCount(final Integer change) {
+        legendaryCount = alter(legendaryCount, change, "legendary");
+        return legendaryCount;
+    }
+
+    public Integer alter(final Integer original, final Integer change, final String valueName) { //TODO: update value name to be an enum
+        if(original + change >= 0) {
+            Integer result = original + change;
+            FileHandler.updateSave(valueName, String.valueOf(result), this.user, this.bossName);
+            return result;
+        }
+
+        //TODO: update file
+        return original;
     }
 }

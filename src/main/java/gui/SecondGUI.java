@@ -1,5 +1,9 @@
 package gui;
+import ResourceHandlers.FileHandler;
+import ResourceHandlers.LootDAO;
 import ResourceHandlers.ShiftListener;
+import dto.Boss;
+import dto.Loot;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -15,18 +19,13 @@ import org.jnativehook.GlobalScreen;
 
 public class SecondGUI extends JPanel {
 
-    private JLabel label, label2, label3, label4, label5, label6, label7;
+    private JLabel crudeLabel, commonLabel, rareLabel, famedLabel, legendaryLabel, kcLabel, killsText;
     private MainFrame mainFrame;
-    public int f = 0;
-    public int l = 0;
-    public int cr = 0;
-    public int co = 0;
-    public int r = 0;
-    private int kc = 0;
+    private Loot loot;
 
     //TODO for loops
 
-    public SecondGUI(final MainFrame mainFrame, final String bossName) {
+    public SecondGUI(final MainFrame mainFrame, final String user, final Boss boss) {
 
         try {
             GlobalScreen.registerNativeHook();
@@ -37,218 +36,201 @@ public class SecondGUI extends JPanel {
 
 
         this.mainFrame = mainFrame;
+        loot = FileHandler.getSave(boss.getName());
+        loot.setUser(user);
+        loot.setBossName(boss.getName());
+        loot.setBossId(boss.getId());
 
-        mainFrame.setTitle("Loot Tracker - " + bossName);
+        mainFrame.setTitle("Loot Tracker - " + boss.getName());
 
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
         Dimension dimension = new Dimension(100, 35);
 
-        JButton but1 = new JButton("Crude");
-        but1.setPreferredSize(dimension);
+        JButton crudeInc = new JButton("Crude");
+        crudeInc.setPreferredSize(dimension);
         constraints.gridx = 0;
         constraints.gridy = 2;
         constraints.insets = new Insets(5,3,5,3);
-        add(but1, constraints);
-        but1.addActionListener((ActionEvent e) -> {
-            ++cr;
-            label.setText(String.valueOf(cr));
+        add(crudeInc, constraints);
+        crudeInc.addActionListener((ActionEvent e) -> {
+            crudeLabel.setText(String.valueOf(loot.alterCrudeCount(1)));
         });
 
-        JButton but2 = new JButton("Common");
-        but2.setPreferredSize(dimension);
+        JButton commonInc = new JButton("Common");
+        commonInc.setPreferredSize(dimension);
         constraints.gridx = 0;
         constraints.gridy = 3;
-        add(but2, constraints);
-        but2.addActionListener((ActionEvent e) -> {
-            ++co;
-            label2.setText(String.valueOf(co));
+        add(commonInc, constraints);
+        commonInc.addActionListener((ActionEvent e) -> {
+            commonLabel.setText(String.valueOf(loot.alterCommonCount(1)));
         });
 
-        JButton but3 = new JButton("Rare");
-        but3.setPreferredSize(dimension);
+        JButton rareInc = new JButton("Rare");
+        rareInc.setPreferredSize(dimension);
         constraints.gridx = 0;
         constraints.gridy = 4;
-        add(but3, constraints);
-        but3.addActionListener((ActionEvent e) -> {
-            ++r;
-            label3.setText(String.valueOf(r));
+        add(rareInc, constraints);
+        rareInc.addActionListener((ActionEvent e) -> {
+            rareLabel.setText(String.valueOf(loot.alterRareCount(1)));
         });
 
-        JButton but4 = new JButton("Famed");
-        but4.setPreferredSize(dimension);
+        JButton famedInc = new JButton("Famed");
+        famedInc.setPreferredSize(dimension);
         constraints.gridx = 0;
         constraints.gridy = 5;
-        add(but4,constraints);
-        but4.addActionListener((ActionEvent e) -> {
-            ++f;
-            label4.setText(String.valueOf(f));
+        add(famedInc,constraints);
+        famedInc.addActionListener((ActionEvent e) -> {
+            famedLabel.setText(String.valueOf(loot.alterFamedCount(1)));
         });
 
-        JButton but5 = new JButton("Legendary");
-        but5.setPreferredSize(dimension);
+        JButton legendaryInc = new JButton("Legendary");
+        legendaryInc.setPreferredSize(dimension);
         constraints.gridx = 0;
         constraints.gridy = 6;
-        add(but5, constraints);
-        but5.addActionListener((ActionEvent e) -> {
-            ++l;
-            label5.setText(String.valueOf(l));
+        add(legendaryInc, constraints);
+        legendaryInc.addActionListener((ActionEvent e) -> {
+            legendaryLabel.setText(String.valueOf(loot.alterLegendaryCount(1)));
         });
 
-        JButton but6 = new JButton("-");
+        JButton kcDec = new JButton("-");
         constraints.gridx = 0;
         constraints.gridy = 1;
-        add(but6, constraints);
-        but6.addActionListener((ActionEvent e) -> {
-            if (kc >= 1)
-            {
-                --kc;
-                label6.setText(String.valueOf(kc));
-            }
+        add(kcDec, constraints);
+        kcDec.addActionListener((ActionEvent e) -> {
+            kcLabel.setText(String.valueOf(loot.alterKillCount(-1)));
         });
 
-        JButton but7 = new JButton("+");
+        JButton kcInc = new JButton("+");
         constraints.gridx = 2;
         constraints.gridy = 1;
-        add(but7, constraints);
-        but7.addActionListener((ActionEvent e) -> {
-            ++kc;
-            label6.setText(String.valueOf(kc));
+        add(kcInc, constraints);
+        kcInc.addActionListener((ActionEvent e) -> {
+            kcLabel.setText(String.valueOf(loot.alterKillCount(1)));
         });
         
-        JButton but8 = new JButton("Back");
+        JButton backButton = new JButton("Back");
         constraints.gridx = 0;
         constraints.gridy = 0;
-        add(but8, constraints);
-        but8.addActionListener((ActionEvent e) -> mainFrame.createIntroScreen());
+        add(backButton, constraints);
+        backButton.addActionListener((ActionEvent e) -> mainFrame.createIntroScreen());
 
-        JButton but9 = new JButton("-");
+        JButton crudeDec = new JButton("-");
         constraints.gridx = 2;
         constraints.gridy = 2;
-        add(but9, constraints);
-        but9.addActionListener((ActionEvent e) -> {
-            if (cr >= 1){
-                --cr;
-                label.setText(String.valueOf(cr));
-            }
+        add(crudeDec, constraints);
+        crudeDec.addActionListener((ActionEvent e) -> {
+            crudeLabel.setText(String.valueOf(loot.alterCrudeCount(-1)));
         });
 
-        JButton but10 = new JButton("-");
+        JButton commonDec = new JButton("-");
         constraints.gridx = 2;
         constraints.gridy = 3;
-        add(but10, constraints);
-        but10.addActionListener((ActionEvent e) -> {
-            if (co >= 1){
-                --co;
-                label2.setText(String.valueOf(co));
-            }
+        add(commonDec, constraints);
+        commonDec.addActionListener((ActionEvent e) -> {
+            commonLabel.setText(String.valueOf(loot.alterCommonCount(-1)));
         });
 
-        JButton but11 = new JButton("-");
+        JButton rareDec = new JButton("-");
         constraints.gridx = 2;
         constraints.gridy = 4;
-        add(but11, constraints);
-        but11.addActionListener((ActionEvent e) -> {
-            if (r >= 1){
-                --r;
-                label3.setText(String.valueOf(r));
-            }
+        add(rareDec, constraints);
+        rareDec.addActionListener((ActionEvent e) -> {
+            rareLabel.setText(String.valueOf(loot.alterRareCount(-1)));
         });
 
-        JButton but12 = new JButton("-");
+        JButton famedDec = new JButton("-");
         constraints.gridx = 2;
         constraints.gridy = 5;
-        add(but12, constraints);
-        but12.addActionListener((ActionEvent e) -> {
-            if (f >= 1){
-                --f;
-                label4.setText(String.valueOf(f));
-            }
+        add(famedDec, constraints);
+        famedDec.addActionListener((ActionEvent e) -> {
+            famedLabel.setText(String.valueOf(loot.alterFamedCount(-1)));
         });
 
-        JButton but13 = new JButton("-");
+        JButton legendaryDec = new JButton("-");
         constraints.gridx = 2;
         constraints.gridy = 6;
-        add(but13, constraints);
-        but13.addActionListener((ActionEvent e) -> {
-            if (l >= 1){
-                --l;
-                label5.setText(String.valueOf(l));
+        add(legendaryDec, constraints);
+        legendaryDec.addActionListener((ActionEvent e) -> {
+            legendaryLabel.setText(String.valueOf(loot.alterLegendaryCount(-1)));
+        });
+
+        JButton saveButton = new JButton("Save");
+        constraints.gridx = 2;
+        constraints.gridy = 0;
+        add(saveButton, constraints);
+        saveButton.addActionListener((ActionEvent e) -> {
+            boolean addedLoot = LootDAO.addLoot(loot);
+            if(addedLoot) {
+                FileHandler.deleteXML(boss.getName());
+                mainFrame.createIntroScreen();
             }
         });
 
-        JButton submit = new JButton("Save");
-        constraints.gridx = 2;
-        constraints.gridy = 0;
-        add(submit, constraints);
-        submit.addActionListener((ActionEvent e) -> {
-            //save session... this tried writing a non existent save file and froze whole program
-            //ResourceHandlers.FileHandler.updateSave("legendary", "4", bossName);
-        });
-
-
-
-        label7 = new JLabel(" Kills:");
-        label7.setPreferredSize(dimension);
-        label7.setHorizontalAlignment(JLabel.CENTER);
-        label7.setFont(new Font("Helvetica", Font.BOLD, 36));
+        killsText = new JLabel(" Kills:");
+        killsText.setPreferredSize(dimension);
+        killsText.setHorizontalAlignment(JLabel.CENTER);
+        killsText.setFont(new Font("Helvetica", Font.BOLD, 36));
         constraints.gridx = 1;
         constraints.gridy = 0;
-        add(label7, constraints);
+        add(killsText, constraints);
 
-        label = new JLabel();
-        label.setPreferredSize(dimension);
-        label.setHorizontalAlignment(JLabel.CENTER);
-        label.setFont(label.getFont().deriveFont(36.0f));
+        crudeLabel = new JLabel();
+        crudeLabel.setPreferredSize(dimension);
+        crudeLabel.setHorizontalAlignment(JLabel.CENTER);
+        crudeLabel.setFont(crudeLabel.getFont().deriveFont(36.0f));
+        crudeLabel.setText(String.valueOf(loot.getCrudeCount()));
         constraints.gridx = 1;
         constraints.gridy = 2;
-        add(label, constraints);
+        add(crudeLabel, constraints);
 
-        label2 = new JLabel();
-        label2.setPreferredSize(dimension);
-        label2.setHorizontalAlignment(JLabel.CENTER);
-        label2.setFont(label.getFont().deriveFont(36.0f));
+        commonLabel = new JLabel();
+        commonLabel.setPreferredSize(dimension);
+        commonLabel.setHorizontalAlignment(JLabel.CENTER);
+        commonLabel.setFont(crudeLabel.getFont().deriveFont(36.0f));
+        commonLabel.setText(String.valueOf(loot.getCommonCount()));
         constraints.gridx = 1;
         constraints.gridy = 3;
-        add(label2, constraints);
+        add(commonLabel, constraints);
 
-        label3 = new JLabel();
-        label3.setPreferredSize(dimension);
-        label3.setHorizontalAlignment(JLabel.CENTER);
-        label3.setFont(label.getFont().deriveFont(36.0f));
+        rareLabel = new JLabel();
+        rareLabel.setPreferredSize(dimension);
+        rareLabel.setHorizontalAlignment(JLabel.CENTER);
+        rareLabel.setFont(crudeLabel.getFont().deriveFont(36.0f));
+        rareLabel.setText(String.valueOf(loot.getRareCount()));
         constraints.gridx = 1;
         constraints.gridy = 4;
-        add(label3, constraints);
+        add(rareLabel, constraints);
 
-        label4 = new JLabel();
-        label4.setPreferredSize(dimension);
-        label4.setHorizontalAlignment(JLabel.CENTER);
-        label4.setFont(label.getFont().deriveFont(36.0f));
+        famedLabel = new JLabel();
+        famedLabel.setPreferredSize(dimension);
+        famedLabel.setHorizontalAlignment(JLabel.CENTER);
+        famedLabel.setFont(crudeLabel.getFont().deriveFont(36.0f));
+        famedLabel.setText(String.valueOf(loot.getFamedCount()));
         constraints.gridx = 1;
         constraints.gridy = 5;
-        add(label4, constraints);
+        add(famedLabel, constraints);
 
-        label5 = new JLabel();
-        label5.setPreferredSize(dimension);
-        label5.setHorizontalAlignment(JLabel.CENTER);
-        label5.setFont(label.getFont().deriveFont(36.0f));
+        legendaryLabel = new JLabel();
+        legendaryLabel.setPreferredSize(dimension);
+        legendaryLabel.setHorizontalAlignment(JLabel.CENTER);
+        legendaryLabel.setFont(crudeLabel.getFont().deriveFont(36.0f));
+        legendaryLabel.setText(String.valueOf(loot.getLegendaryCount()));
         constraints.gridx = 1;
         constraints.gridy = 6;
-        add(label5, constraints);
+        add(legendaryLabel, constraints);
 
-        label6 = new JLabel(String.valueOf(kc));
-        label6.setPreferredSize(dimension);
-        label6.setHorizontalAlignment(JLabel.CENTER);
-        label6.setFont(label.getFont().deriveFont(36.0f));
+        kcLabel = new JLabel(String.valueOf(loot.getKillCount()));
+        kcLabel.setPreferredSize(dimension);
+        kcLabel.setHorizontalAlignment(JLabel.CENTER);
+        kcLabel.setFont(crudeLabel.getFont().deriveFont(36.0f));
         constraints.gridx = 1;
         constraints.gridy = 1;
-        add(label6, constraints);
-
+        add(kcLabel, constraints);
     }
 
     public void killIncrement() {
-        ++kc;
-        label6.setText(String.valueOf(kc));
+        kcLabel.setText(String.valueOf(loot.alterKillCount(1)));
     }
 }
