@@ -48,6 +48,8 @@ public class SecondGUI extends JPanel {
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
+        mainFrame.setFocusableWindowState(false);
+
         Dimension dimension = new Dimension(90, 35);
 
         JButton crudeInc = new JButton("Crude");
@@ -119,6 +121,7 @@ public class SecondGUI extends JPanel {
         constraints.gridy = 0;
         add(backButton, constraints);
         backButton.addActionListener((ActionEvent e) -> {
+            mainFrame.setFocusableWindowState(true);
             mainFrame.createIntroScreen();
             try {
                 GlobalScreen.unregisterNativeHook();
