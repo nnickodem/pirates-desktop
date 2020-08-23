@@ -76,21 +76,22 @@ public class NamePicker extends JPanel{
         add(bossError, constraints);
 
         ButtonGroup group = new ButtonGroup();
-        JRadioButton yesShift = new JRadioButton("Use shift/alt to alter killcount");
-        JRadioButton noShift = new JRadioButton("Do not use shift/alt");
-        group.add(yesShift);
+        JRadioButton noShift = new JRadioButton("Do not use shift/alt to alter killcount");
+        JRadioButton yesShift = new JRadioButton("Use shift/alt");
         group.add(noShift);
-
-        yesShift.addActionListener(e -> shiftToggle = true);
-        yesShift.setSelected(true);
-        constraints.gridx = 0;
-        constraints.gridy = 4;
-        add(yesShift, constraints);
+        group.add(yesShift);
 
         noShift.addActionListener(e -> shiftToggle = false);
+        noShift.setSelected(true);
+        constraints.gridx = 0;
+        constraints.gridy = 4;
+        add(noShift, constraints);
+
+        yesShift.addActionListener(e -> shiftToggle = true);
         constraints.gridx = 0;
         constraints.gridy = 5;
-        add(noShift, constraints);
+        add(yesShift, constraints);
+
     }
 
     private void setBossName(final String bossName, final String user){
