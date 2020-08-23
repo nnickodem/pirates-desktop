@@ -15,7 +15,7 @@ public class NamePicker extends JPanel{
     private final JTextField bossField, userField;
     private final MainFrame mainFrame;
     private final List<Boss> bosses;
-    private boolean shiftToggle = true;
+    private boolean shiftToggle = false;
 
     public NamePicker(final MainFrame mainFrame, final String user, final List<Boss> bosses){
         this.bosses = bosses;
