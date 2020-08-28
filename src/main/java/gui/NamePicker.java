@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.awt.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.plaf.BorderUIResource;
 
 public class NamePicker extends JPanel{
 
@@ -97,7 +96,8 @@ public class NamePicker extends JPanel{
     private void setBossName(final String bossName, final String user){
         Optional<Boss> boss = bosses.stream().filter(b -> b.getName().equalsIgnoreCase(bossName)).findAny();
         if (boss.isPresent()){
-            mainFrame.createSecondGUI(user, boss.get(), shiftToggle);
+            mainFrame.createLootTrackingGUI(user, boss.get());
+            //mainFrame.createSecondGUI(user, boss.get(), shiftToggle);
         }else{
             bossError.setVisible(true);
         }
