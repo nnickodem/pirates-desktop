@@ -4,35 +4,30 @@ import ResourceHandlers.FileHandler;
 import ResourceHandlers.LootDAO;
 import dto.Boss;
 import dto.Loot;
+import dto.Session;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.List;
+import Enum.Rarity;
 
 //first
 public class LootTrackingGUI extends JPanel{
     private Loot loot;
     private MainFrame mainFrame;
-    public LootTrackingGUI(final MainFrame mainFrame, final String user, final Boss boss){
+    public LootTrackingGUI(final MainFrame mainFrame, Session session){
         this.mainFrame = mainFrame;
 
-        mainFrame.setTitle("Loot Tracker - " + boss.getName());
-
-        loot = FileHandler.getSave(boss.getName());
-        loot.setUser(user);
-        loot.setBossName(boss.getName());
-        loot.setBossId(boss.getId());
+        mainFrame.setTitle("Loot Tracker - " + session.getBoss().getName());
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
-        int[] rarity = {loot.getCrudeCount(),loot.getCommonCount(), loot.getRareCount(), loot.getFamedCount(), loot.getLegendaryCount()};
+        int[] rarity = {session.getTotalCount(Rarity.CRUDE), session.getTotalCount(Rarity.COMMON),session.getTotalCount(Rarity.RARE),
+                session.getTotalCount(Rarity.FAMED),session.getTotalCount(Rarity.LEGENDARY)};
 
         String lootNum = "";
         for (int i = 0; i < rarity.length; ++i){
-            if (i < 4){
+            if (i < rarity.length-1){
                 lootNum += rarity[i] + " / ";
             }else{
                 lootNum += rarity[i];
@@ -44,7 +39,7 @@ public class LootTrackingGUI extends JPanel{
                 "<font color='green'>" + arrLootNum[2] + "<font color='black'>" + "/ " +
                 "<font color='blue'>" + arrLootNum[3] + "<font color='black'>" + "/ " + "<font color='red'>" + arrLootNum[4] + "</font></html>";
 
-        JLabel killDisplay = new JLabel("Kill Count - " + loot.getKillCount());
+        JLabel killDisplay = new JLabel("Kill Count: " + session.getTotalCount(null));
         killDisplay.setFont(new Font("Century Gothic", Font.BOLD ,18));
         c.weightx = 0.5;
         c.gridx = 0;
@@ -62,19 +57,18 @@ public class LootTrackingGUI extends JPanel{
         JButton killButton = new JButton(GUIUtils.scaleImage("resources/potcobutton2.png",100,35));
         killButton.setPreferredSize(new Dimension(100,35));
         killButton.addActionListener(e -> {
-            loot.alterKillCount(1);
-            mainFrame.createLootEntryGUI(user, boss, rarity);
+            mainFrame.createLootEntryGUI(session);
         });
         c.gridx = 3;
         c.gridy = 0;
         add(killButton, c);
 
-        JButton submit = new JButton("submit");
+        JButton submit = new JButton(GUIUtils.scaleImage("resources/submit.PNG",100,35));
         submit.setPreferredSize(new Dimension(100,35));
         submit.addActionListener(e ->{
             boolean addedLoot = LootDAO.addLoot(loot);
             if(addedLoot) {
-                FileHandler.deleteXML(boss.getName());
+                FileHandler.deleteXML(session.getBoss().getName());
                 mainFrame.createIntroScreen();
             }
         });

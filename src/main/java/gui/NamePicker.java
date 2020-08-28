@@ -1,7 +1,10 @@
 package gui;
 
+import ResourceHandlers.FileHandler;
 import dto.Boss;
 import java.util.Optional;
+
+import dto.Session;
 import org.apache.commons.lang3.StringUtils;
 
 import java.awt.*;
@@ -96,7 +99,8 @@ public class NamePicker extends JPanel{
     private void setBossName(final String bossName, final String user){
         Optional<Boss> boss = bosses.stream().filter(b -> b.getName().equalsIgnoreCase(bossName)).findAny();
         if (boss.isPresent()){
-            mainFrame.createLootTrackingGUI(user, boss.get());
+
+            mainFrame.createLootTrackingGUI(FileHandler.getSave(user, boss.get()));
             //mainFrame.createSecondGUI(user, boss.get(), shiftToggle);
         }else{
             bossError.setVisible(true);
