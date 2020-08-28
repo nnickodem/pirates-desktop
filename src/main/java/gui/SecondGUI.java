@@ -24,8 +24,6 @@ public class SecondGUI extends JPanel {
     private MainFrame mainFrame;
     private Loot loot;
 
-    //TODO for loops
-
     public SecondGUI(final MainFrame mainFrame, final String user, final Boss boss, final boolean shiftToggle) {
 
         if (shiftToggle){

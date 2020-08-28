@@ -113,7 +113,7 @@ public class Loot {
             return result;
         }
 
-        //TODO: update file
+
         return original;
     }
 }
