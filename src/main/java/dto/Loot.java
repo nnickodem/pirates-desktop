@@ -54,37 +54,52 @@ public class Loot {
 
 
     public Integer alter(final Integer change, final Rarity rarity) {
+        Integer original = getVariable(rarity);
+
+        if(original + change >= 0) {
+            return getVariable(rarity, change);
+        }
+
+        return original;
+    }
+
+    public Integer getVariable(final Rarity rarity, final Integer alteration){
         Integer original;
         if(rarity == null) {
+            killCount += alteration;
             original = killCount;
         } else {
             switch (rarity) {
                 case CRUDE:
+                    crudeCount += alteration;
                     original = crudeCount;
                     break;
                 case COMMON:
+                    commonCount += alteration;
                     original = commonCount;
                     break;
                 case RARE:
+                    rareCount += alteration;
                     original = rareCount;
                     break;
                 case FAMED:
+                    famedCount += alteration;
                     original = famedCount;
                     break;
                 case LEGENDARY:
+                    legendaryCount += alteration;
                     original = legendaryCount;
                     break;
                 default:
                     //TODO: wont happen, but should still handle better
                     original = 0;
+
             }
         }
-
-        if(original + change >= 0) {
-            return original + change;
-
-        }
-
         return original;
+    }
+
+    public Integer getVariable(final Rarity rarity) {
+        return getVariable(rarity, 0);
     }
 }

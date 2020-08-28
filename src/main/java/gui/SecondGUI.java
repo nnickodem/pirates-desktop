@@ -1,25 +1,10 @@
 package gui;
-import ResourceHandlers.FileHandler;
-import ResourceHandlers.LootDAO;
-import ResourceHandlers.ShiftListener;
-import dto.Boss;
-import dto.Loot;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import org.jnativehook.GlobalScreen;
-import org.jnativehook.NativeHookException;
 
 //switch this with gui.NamePicker in gui.MainFrame for other GUI
 
 public class SecondGUI extends JPanel {
-
+/*
     private JLabel crudeLabel, commonLabel, rareLabel, famedLabel, legendaryLabel, kcLabel, killsText;
     private MainFrame mainFrame;
     private Loot loot;
@@ -36,10 +21,6 @@ public class SecondGUI extends JPanel {
         }
 
         this.mainFrame = mainFrame;
-        loot = FileHandler.getSave(boss.getName());
-        loot.setUser(user);
-        loot.setBossName(boss.getName());
-        loot.setBossId(boss.getId());
 
         mainFrame.setTitle("Loot Tracker - " + boss.getName());
 
@@ -248,4 +229,6 @@ public class SecondGUI extends JPanel {
     public void killDecrement(){
         kcLabel.setText(String.valueOf(loot.alterKillCount(-1)));
     }
+
+ */
 }

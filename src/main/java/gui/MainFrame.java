@@ -2,6 +2,7 @@ package gui;
 
 import ResourceHandlers.LootDAO;
 import dto.Boss;
+import dto.Session;
 
 import java.awt.*;
 import java.util.List;
@@ -20,23 +21,12 @@ public class MainFrame extends JFrame{
         setPreferredSize(new Dimension(600,600));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("TLOPO Loot Tracker");
-        //setUndecorated(true);
+        setUndecorated(true);
         pack();
         setVisible(true);
         createIntroScreen();
         setResizable(false);
 
-        /*
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
-        Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
-        int x = (int) rect.getMinX();
-        int y =(int) (getWidth() - getWidth() * .3) ;
-        setLocation(x, y);
-
-        setAlwaysOnTop(true);
-
-         */
     }
 
     public void createIntroScreen() {
@@ -60,7 +50,7 @@ public class MainFrame extends JFrame{
     }
 
     public void createSecondGUI(final String user, final Boss boss, final boolean shiftToggle) {
-
+/*
         SecondGUI secondGUI = new SecondGUI(this, user, boss, shiftToggle);
 
         this.user = user;
@@ -77,11 +67,13 @@ public class MainFrame extends JFrame{
         revalidate();
         currentPanel = secondGUI;
 
+ */
+
     }
 
-    public void createLootTrackingGUI(final String user, final Boss boss){
+    public void createLootTrackingGUI(Session session){
 
-        LootTrackingGUI lootTrackingGUI = new LootTrackingGUI(this, user, boss);
+        LootTrackingGUI lootTrackingGUI = new LootTrackingGUI(this, session);
 
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
@@ -107,9 +99,9 @@ public class MainFrame extends JFrame{
 
     }
 
-    public void createLootEntryGUI(final String user, final Boss boss, int[] rarity){
+    public void createLootEntryGUI(Session session){
 
-        LootEntryGUI createLootEntryGUI = new LootEntryGUI(this, user, boss, rarity);
+        LootEntryGUI createLootEntryGUI = new LootEntryGUI(this, session);
 
         setPreferredSize(new Dimension(600,200));
         pack();
