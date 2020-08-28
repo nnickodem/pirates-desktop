@@ -1,6 +1,12 @@
 package ResourceHandlers;
 
+import Enum.Rarity;
+import Enum.ChestType;
+import dto.Boss;
 import dto.Loot;
+import dto.Session;
+import java.util.HashMap;
+import java.util.Map;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -13,11 +19,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.w3c.dom.NodeList;
 
 
 /**
@@ -27,56 +31,67 @@ public class FileHandler {
 
     private static final Logger logger = Logger.getLogger("errorLogger");
     private static final String saveFilePath = ".xml";
-    private static final List<String> rarities = Arrays.asList("crude", "common", "rare", "famed", "legendary");
 
     /**
      * Writes a new empty save file xml
      */
-    public static void writeSaveFile(final String userName, final String bossName) {
+    public static void writeSaveFile(final String userName, final Boss boss) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.newDocument();
 
-            Element root = document.createElement(bossName.replaceAll(" ", ""));
+            Element root = document.createElement(boss.getName().replaceAll(" ", ""));
             document.appendChild(root);
 
             Element user = document.createElement("user");
             user.appendChild(document.createTextNode(userName));
             root.appendChild(user);
-            Element boss = document.createElement("boss");
-            boss.appendChild(document.createTextNode(bossName));
-            root.appendChild(boss);
-            Element kc = document.createElement("kills");
-            kc.appendChild(document.createTextNode("0"));
-            root.appendChild(kc);
-            for (String r : rarities) {
-                Element rarity = document.createElement(r);
-                rarity.appendChild(document.createTextNode("0"));
-                root.appendChild(rarity);
+            Element bossName = document.createElement("bossName");
+            bossName.appendChild(document.createTextNode(boss.getName()));
+            root.appendChild(bossName);
+            Element bossId = document.createElement("bossId");
+            bossId.appendChild(document.createTextNode(String.valueOf(boss.getId())));
+            root.appendChild(bossId);
+            for(ChestType c : ChestType.values()) {
+                Element chest = document.createElement("chest_" + c.getName());
+                root.appendChild(chest);
+                Element kc = document.createElement("kills");
+                kc.appendChild(document.createTextNode("0"));
+                chest.appendChild(kc);
+                for (Rarity r : Rarity.values()) {
+                    Element rarity = document.createElement(r.getName());
+                    rarity.appendChild(document.createTextNode("0"));
+                    chest.appendChild(rarity);
+                }
             }
 
-            saveXML(document, bossName);
+            saveXML(document, boss.getName());
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to write save file!", e);
         }
     }
 
 
-    public static void updateSave(final String value, final String result, final String userName, final String bossName) {
+    public static void updateSave(final String userName, final Boss boss, final String chestType, final String name, final String value) {
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            Document doc = docBuilder.parse(bossName.replaceAll(" ", "") + saveFilePath);
+            Document doc = docBuilder.parse(boss.getName().replaceAll(" ", "") + saveFilePath);
 
-            Node object = doc.getElementsByTagName(value.toLowerCase()).item(0);
-            object.setTextContent(result);
+            NodeList nodeList = doc.getElementsByTagName("chest_" + chestType).item(0).getChildNodes();
+            for(int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
+                if(node.getNodeName().equals(name)) {
+                    node.setTextContent(value);
+                }
+            }
 
-            saveXML(doc, bossName);
+            saveXML(doc, boss.getName());
         } catch (IOException i) {
             logger.log(Level.WARNING, "Failed to read save file, attempting to write one...", i);
-            writeSaveFile(userName, bossName);
-            updateSave(value, result, userName, bossName);
+            writeSaveFile(userName, boss);
+            updateSave(userName, boss, chestType, name, value);
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to update save file!", e);
@@ -88,29 +103,63 @@ public class FileHandler {
      *
      * @return List<String> where each entry is a level result
      */
-    public static Loot getSave(final String bossName) {
+    public static Session getSave(final String user, final Boss boss) {
         try {
-            File fXmlFile = new File(bossName.replaceAll(" ", "") + saveFilePath);
+            File fXmlFile = new File(boss.getName().replaceAll(" ", "") + saveFilePath);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(fXmlFile);
 
-            List<Integer> storedValues = new ArrayList<>();
-            storedValues.add(Integer.valueOf(doc.getElementsByTagName("kills").item(0).getTextContent()));
-            rarities.forEach(r -> {
-                storedValues.add(Integer.valueOf(doc.getElementsByTagName(r).item(0).getTextContent()));
-            });
-            Loot loot = new Loot(storedValues.get(0), storedValues.get(1), storedValues.get(2), storedValues.get(3),
-                    storedValues.get(4), storedValues.get(5));
+            Map<ChestType, Loot> lootMap = new HashMap<>();
+            for(ChestType chestType : ChestType.values()) {
+                Integer kc = 0;
+                Integer crude = 0;
+                Integer common = 0;
+                Integer rare = 0;
+                Integer famed = 0;
+                Integer legendary = 0;
+                NodeList nodeList = doc.getElementsByTagName("chest_" + chestType.getName()).item(0).getChildNodes();
+                for(int i = 0; i < nodeList.getLength(); i++) {
+                    Node node = nodeList.item(i);
+                    if(node.getNodeName().equals("kills")) {
+                        kc = Integer.valueOf(node.getTextContent());
+                    } else {
+                        Rarity rarity = Rarity.valueOf(node.getNodeName().toUpperCase());
+                        switch (rarity) {
+                            case CRUDE:
+                                crude = Integer.valueOf(node.getTextContent());
+                                break;
+                            case COMMON:
+                                common = Integer.valueOf(node.getTextContent());
+                                break;
+                            case RARE:
+                                rare = Integer.valueOf(node.getTextContent());
+                                break;
+                            case FAMED:
+                                famed = Integer.valueOf(node.getTextContent());
+                                break;
+                            case LEGENDARY:
+                                legendary = Integer.valueOf(node.getTextContent());
+                                break;
+                            default:
+                                //do nothing
+                        }
+                    }
+                }
+                Loot loot = new Loot(kc, crude, common, rare, famed, legendary);
+                lootMap.put(chestType, loot);
+            }
 
-            return loot;
+            Session session = new Session(user, boss, lootMap);
+
+            return session;
         } catch (IOException i) {
             logger.log(Level.WARNING, "Failed to read save file, doesnt exist", i);
-            return new Loot();
+            return new Session(user, boss);
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to read save file!", e);
-            return new Loot();
+            return new Session(user, boss);
         }
     }
 

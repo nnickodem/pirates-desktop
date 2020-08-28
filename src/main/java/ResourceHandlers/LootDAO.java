@@ -72,7 +72,8 @@ public class LootDAO {
     }
 
     private static boolean addLoot(final Loot loot, final String host) throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
+        return false; //TODO: update webservice and db to work with this
+        /*ObjectMapper objectMapper = new ObjectMapper();
 
         byte[] out = objectMapper.writeValueAsBytes(loot);
         int length = out.length;
@@ -89,6 +90,6 @@ public class LootDAO {
             os.write(out);
         }
 
-        return 200 == http.getResponseCode();
+        return 200 == http.getResponseCode();*/
     }
 }
