@@ -1,33 +1,32 @@
 package gui;
 
-import javax.swing.*;
-import java.awt.*;
+import Enum.ChestType;
+import Enum.Rarity;
+import ResourceHandlers.LootMouseListener;
+import dto.Loot;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
-
-import ResourceHandlers.FileHandler;
-import ResourceHandlers.LootMouseListener;
-import dto.Boss;
-import dto.Loot;
-import dto.Session;
-import Enum.Rarity;
-import Enum.ChestType;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 //second
 public class LootEntryGUI extends JPanel {
 
-    private Session session;
-    private MainFrame mainFrame;
     private Loot loot;
     private List<LootMouseListener> mouseListeners;
     private ChestType chestType;
 
-    public LootEntryGUI(final MainFrame mainFrame, Session session){
-        this.mainFrame = mainFrame;
+    public LootEntryGUI(final MainFrame mainFrame){
         this.mouseListeners = new ArrayList<>();
         this.chestType = ChestType.NONE;
+        loot = new Loot();
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -48,22 +47,22 @@ public class LootEntryGUI extends JPanel {
         c.weightx = .5;
         c.gridx = 0;
         c.gridy = 0;
-        lootPouch.addActionListener(e -> updateChestType(ChestType.LOOT_POUCH));
+        lootPouch.addActionListener(e -> chestType = ChestType.LOOT_POUCH);
         add(lootPouch, c);
 
         c.gridx = 0;
         c.gridy = 1;
-        lootChest.addActionListener(e -> updateChestType(ChestType.LOOT_CHEST));
+        lootChest.addActionListener(e -> chestType = ChestType.LOOT_CHEST);
         add(lootChest, c);
 
         c.gridx = 0;
         c.gridy = 2;
-        skullChest.addActionListener(e -> updateChestType(ChestType.SKULL_CHEST));
+        skullChest.addActionListener(e -> chestType = ChestType.SKULL_CHEST);
         add(skullChest, c);
 
         c.gridx = 0;
         c.gridy = 3;
-        none.addActionListener(e -> updateChestType(ChestType.NONE));
+        none.addActionListener(e -> chestType = ChestType.NONE);
         add(none, c);
 
         c.fill = GridBagConstraints.NONE;
@@ -73,7 +72,7 @@ public class LootEntryGUI extends JPanel {
         c.gridx = 1;
         c.gridy = 0;
         add(crudeInc, c);
-        LootMouseListener crudeMouseListener = new LootMouseListener(session, chestType, Rarity.CRUDE);
+        LootMouseListener crudeMouseListener = new LootMouseListener(loot, Rarity.CRUDE);
         mouseListeners.add(crudeMouseListener);
         crudeInc.addMouseListener(crudeMouseListener);
 
@@ -82,7 +81,7 @@ public class LootEntryGUI extends JPanel {
         c.gridx = 2;
         c.gridy = 0;
         add(commonInc, c);
-        LootMouseListener commonMouseListener = new LootMouseListener(session, chestType, Rarity.COMMON);
+        LootMouseListener commonMouseListener = new LootMouseListener(loot, Rarity.COMMON);
         mouseListeners.add(commonMouseListener);
         commonInc.addMouseListener(commonMouseListener);
 
@@ -91,7 +90,7 @@ public class LootEntryGUI extends JPanel {
         c.gridx = 3;
         c.gridy = 0;
         add(rareInc, c);
-        LootMouseListener rareMouseListener = new LootMouseListener(session, chestType, Rarity.RARE);
+        LootMouseListener rareMouseListener = new LootMouseListener(loot, Rarity.RARE);
         mouseListeners.add(rareMouseListener);
         rareInc.addMouseListener(rareMouseListener);
 
@@ -100,7 +99,7 @@ public class LootEntryGUI extends JPanel {
         c.gridx = 1;
         c.gridy = 1;
         add(famedInc,c);
-        LootMouseListener famedMouseListener = new LootMouseListener(session, chestType, Rarity.FAMED);
+        LootMouseListener famedMouseListener = new LootMouseListener(loot, Rarity.FAMED);
         mouseListeners.add(famedMouseListener);
         famedInc.addMouseListener(famedMouseListener);
 
@@ -109,7 +108,7 @@ public class LootEntryGUI extends JPanel {
         c.gridx = 2;
         c.gridy = 1;
         add(legendaryInc, c);
-        LootMouseListener legendaryMouseListener = new LootMouseListener(session, chestType, Rarity.LEGENDARY);
+        LootMouseListener legendaryMouseListener = new LootMouseListener(loot, Rarity.LEGENDARY);
         mouseListeners.add(legendaryMouseListener);
         legendaryInc.addMouseListener(legendaryMouseListener);
 
@@ -119,16 +118,9 @@ public class LootEntryGUI extends JPanel {
         c.gridy = 1;
         add(save, c);
         save.addActionListener((ActionEvent e) -> {
-            session.alter(1, chestType, null);
-            mainFrame.createLootTrackingGUI(session);
+            loot.alter(null, 1);
+            mainFrame.submitLootEntry(loot, chestType);
 
         });
     }
-
-    public void updateChestType(ChestType chestType) {
-        this.chestType = chestType;
-        mouseListeners.forEach(l -> l.setChestType(chestType));
-    }
-
-
 }

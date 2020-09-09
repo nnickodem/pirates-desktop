@@ -53,18 +53,18 @@ public class Loot {
     }
 
 
-    public Integer alter(final Integer change, final Rarity rarity) {
+    public Integer alter(final Rarity rarity, final Integer change) {
         Integer original = getVariable(rarity);
 
         if(original + change >= 0) {
-            return getVariable(rarity, change);
+            return alterVariable(rarity, change);
         }
 
         return original;
     }
 
-    public Integer getVariable(final Rarity rarity, final Integer alteration){
-        Integer original;
+    private Integer alterVariable(final Rarity rarity, final Integer alteration){
+        int original;
         if(rarity == null) {
             killCount += alteration;
             original = killCount;
@@ -100,6 +100,6 @@ public class Loot {
     }
 
     public Integer getVariable(final Rarity rarity) {
-        return getVariable(rarity, 0);
+        return alterVariable(rarity, 0);
     }
 }

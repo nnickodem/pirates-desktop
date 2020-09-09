@@ -72,8 +72,7 @@ public class FileHandler {
         }
     }
 
-
-    public static void updateSave(final String userName, final Boss boss, final String chestType, final String name, final String value) {
+    public static void updateSave(final String userName, final Boss boss, final String chestType, final Loot loot) {
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -82,16 +81,20 @@ public class FileHandler {
             NodeList nodeList = doc.getElementsByTagName("chest_" + chestType).item(0).getChildNodes();
             for(int i = 0; i < nodeList.getLength(); i++) {
                 Node node = nodeList.item(i);
-                if(node.getNodeName().equals(name)) {
-                    node.setTextContent(value);
+                Rarity rarity;
+                if(node.getNodeName().equals("kills")) {
+                    rarity = null;
+                } else {
+                    rarity = Rarity.valueOf(node.getNodeName().toUpperCase());
                 }
+                node.setTextContent(String.valueOf(loot.getVariable(rarity)));
             }
 
             saveXML(doc, boss.getName());
-        } catch (IOException i) {
+        } catch (final IOException i) {
             logger.log(Level.WARNING, "Failed to read save file, attempting to write one...", i);
             writeSaveFile(userName, boss);
-            updateSave(userName, boss, chestType, name, value);
+            updateSave(userName, boss, chestType, loot);
 
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Failed to update save file!", e);
