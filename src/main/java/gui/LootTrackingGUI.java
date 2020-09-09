@@ -1,22 +1,19 @@
 package gui;
 
-import ResourceHandlers.FileHandler;
-import ResourceHandlers.LootDAO;
-import dto.Boss;
-import dto.Loot;
-import dto.Session;
-
-import javax.swing.*;
-import java.awt.*;
 import Enum.Rarity;
+import dto.Session;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 //first
 public class LootTrackingGUI extends JPanel{
-    private Loot loot;
-    private MainFrame mainFrame;
-    public LootTrackingGUI(final MainFrame mainFrame, Session session){
-        this.mainFrame = mainFrame;
 
+    public LootTrackingGUI(final MainFrame mainFrame, final Session session){
         mainFrame.setTitle("Loot Tracker - " + session.getBoss().getName());
 
         setLayout(new GridBagLayout());
@@ -57,7 +54,7 @@ public class LootTrackingGUI extends JPanel{
         JButton killButton = new JButton(GUIUtils.scaleImage("resources/potcobutton2.png",100,35));
         killButton.setPreferredSize(new Dimension(100,35));
         killButton.addActionListener(e -> {
-            mainFrame.createLootEntryGUI(session);
+            mainFrame.createLootEntryGUI();
         });
         c.gridx = 3;
         c.gridy = 0;
@@ -66,11 +63,11 @@ public class LootTrackingGUI extends JPanel{
         JButton submit = new JButton(GUIUtils.scaleImage("resources/submit.PNG",100,35));
         submit.setPreferredSize(new Dimension(100,35));
         submit.addActionListener(e ->{
-            boolean addedLoot = LootDAO.addLoot(loot);
+            /*boolean addedLoot = LootDAO.addLoot(loot); TODO: update
             if(addedLoot) {
                 FileHandler.deleteXML(session.getBoss().getName());
                 mainFrame.createIntroScreen();
-            }
+            }*/
         });
         c.gridx = 4;
         c.gridy = 0;

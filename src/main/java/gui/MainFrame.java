@@ -2,7 +2,9 @@ package gui;
 
 import ResourceHandlers.LootDAO;
 import dto.Boss;
+import dto.Loot;
 import dto.Session;
+import Enum.ChestType;
 
 import java.awt.*;
 import java.util.List;
@@ -14,6 +16,7 @@ public class MainFrame extends JFrame{
     private JPanel currentPanel;
     private List<Boss> bosses;
     private String user;
+    private Session session;
 
     public MainFrame() {
         //here for convenience, probably a better spot to move to later
@@ -71,7 +74,8 @@ public class MainFrame extends JFrame{
 
     }
 
-    public void createLootTrackingGUI(Session session){
+    public void createLootTrackingGUI(final Session session){
+        this.session = session;
 
         LootTrackingGUI lootTrackingGUI = new LootTrackingGUI(this, session);
 
@@ -99,9 +103,9 @@ public class MainFrame extends JFrame{
 
     }
 
-    public void createLootEntryGUI(Session session){
+    public void createLootEntryGUI() {
 
-        LootEntryGUI createLootEntryGUI = new LootEntryGUI(this, session);
+        LootEntryGUI createLootEntryGUI = new LootEntryGUI(this);
 
         setPreferredSize(new Dimension(600,200));
         pack();
@@ -117,7 +121,10 @@ public class MainFrame extends JFrame{
         setContentPane(createLootEntryGUI);
         revalidate();
         currentPanel = createLootEntryGUI;
+    }
 
-
+    public void submitLootEntry(final Loot loot, final ChestType chestType) {
+        session.mergeLoot(loot, chestType);
+        createLootTrackingGUI(session);
     }
 }

@@ -4,7 +4,6 @@ import Enum.ChestType;
 import Enum.Rarity;
 import ResourceHandlers.FileHandler;
 
-import java.net.Inet4Address;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,11 +43,11 @@ public class Session {
         return lootMap.get(chestType);
     }
 
-    public Integer alter(final Integer change, final ChestType chestType, final Rarity rarity) {
-        Integer result = lootMap.get(chestType).alter(change, rarity);
-        String name = rarity == null ? "kills" : rarity.getName();
-        FileHandler.updateSave(user, boss, chestType.getName(), name, String.valueOf(result));
-        return result;
+    public void mergeLoot(final Loot loot, final ChestType chestType) {
+        Loot lootEntry = lootMap.get(chestType);
+        lootEntry.alter(null, loot.getKillCount());
+        Arrays.stream(Rarity.values()).forEach(r -> lootEntry.alter(r, loot.getVariable(r)));
+        FileHandler.updateSave(user, boss, chestType.getName(), lootEntry);
     }
 
     public Integer getTotalCount(final Rarity rarity) {
