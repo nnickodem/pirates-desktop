@@ -26,7 +26,7 @@ public class NamePicker extends JPanel{
         this.bosses = bosses;
         this.mainFrame = mainFrame;
 
-        ImageIcon obj =new ImageIcon("resources/adventure-2528477_1920.jpg");
+        ImageIcon obj = new ImageIcon("resources/adventure-2528477_1920.jpg");
         backGround = obj.getImage();
 
         setLayout(new GridBagLayout());
