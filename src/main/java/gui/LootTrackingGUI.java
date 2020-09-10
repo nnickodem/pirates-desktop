@@ -4,19 +4,19 @@ import Enum.Rarity;
 import ResourceHandlers.FileHandler;
 import ResourceHandlers.LootDAO;
 import dto.Session;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+
+import java.awt.*;
+import javax.swing.*;
 
 //first
 public class LootTrackingGUI extends JPanel{
+    private Image backGround;
 
     public LootTrackingGUI(final MainFrame mainFrame, final Session session){
         mainFrame.setTitle("Loot Tracker - " + session.getBoss().getName());
+
+        ImageIcon obj = (GUIUtils.scaleImage("resources/cool-background2.png",600,90));
+        backGround = obj.getImage();
 
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -76,6 +76,13 @@ public class LootTrackingGUI extends JPanel{
         add(submit, c);
 
     }
+
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        g.drawImage(backGround, 0, 0, null);
+    }
+
+
 
 
 }

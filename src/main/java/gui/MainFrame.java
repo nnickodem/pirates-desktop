@@ -8,15 +8,15 @@ import Enum.ChestType;
 
 import java.awt.*;
 import java.util.List;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class MainFrame extends JFrame{
 
     private JPanel currentPanel;
     private List<Boss> bosses;
     private String user;
-    private Session session;
+    public Color color = new Color(0,0,0);
+	private Session session;
 
     public MainFrame() {
         //here for convenience, probably a better spot to move to later
@@ -24,8 +24,9 @@ public class MainFrame extends JFrame{
         setPreferredSize(new Dimension(600,600));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("TLOPO Loot Tracker");
-        setUndecorated(true);
+        //setUndecorated(true);
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
         createIntroScreen();
         setResizable(false);
@@ -42,7 +43,7 @@ public class MainFrame extends JFrame{
             remove(currentPanel);
             currentPanel.setVisible(false);
         }
-        setPreferredSize(new Dimension(600,600));
+        setPreferredSize(new Dimension(800,700));
         pack();
         add(namePicker);
         namePicker.setVisible(true);
@@ -99,15 +100,13 @@ public class MainFrame extends JFrame{
         setContentPane(lootTrackingGUI);
         revalidate();
         currentPanel = lootTrackingGUI;
-
-
     }
 
     public void createLootEntryGUI() {
 
         LootEntryGUI createLootEntryGUI = new LootEntryGUI(this);
 
-        setPreferredSize(new Dimension(600,200));
+        setPreferredSize(new Dimension(600,250));
         pack();
 
         remove(createLootEntryGUI);

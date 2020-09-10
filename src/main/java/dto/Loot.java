@@ -27,31 +27,25 @@ public class Loot {
         return killCount;
     }
 
-
     public Integer getCrudeCount() {
         return crudeCount;
     }
-
 
     public Integer getCommonCount() {
         return commonCount;
     }
 
-
     public Integer getRareCount() {
         return rareCount;
     }
-
 
     public Integer getFamedCount() {
         return famedCount;
     }
 
-
     public Integer getLegendaryCount() {
         return legendaryCount;
     }
-
 
     public Integer alter(final Rarity rarity, final Integer change) {
         Integer original = getVariable(rarity);

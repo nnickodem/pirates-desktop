@@ -1,11 +1,11 @@
 package Enum;
 
 public enum Rarity {
-    CRUDE("crude"),
-    COMMON("common"),
-    RARE("rare"),
-    FAMED("famed"),
-    LEGENDARY("legendary");
+    CRUDE("Crude"),
+    COMMON("Common"),
+    RARE("Rare"),
+    FAMED("Famed"),
+    LEGENDARY("Legendary");
 
     private final String name;
 
