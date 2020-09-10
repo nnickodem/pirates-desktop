@@ -3,6 +3,7 @@ package ResourceHandlers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.Boss;
 import dto.Loot;
+import dto.Session;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ConnectException;
@@ -53,14 +54,14 @@ public class LootDAO {
         return bosses;
     }
 
-    public static boolean addLoot(final Loot loot) {
+    public static boolean addLoot(final Session session) {
         boolean success = false;
         try {
             try {
-                success = addLoot(loot, publicIP);
+                success = addLoot(session, publicIP);
             } catch (final ConnectException c) {
                 logger.log(Level.WARNING, "error on public ip, attempting private ip");
-                success = addLoot(loot, privateIP);
+                success = addLoot(session, privateIP);
             }
         } catch (final Exception e) {
             logger.log(Level.SEVERE, "failed to add loot", e);
@@ -71,11 +72,10 @@ public class LootDAO {
         return success;
     }
 
-    private static boolean addLoot(final Loot loot, final String host) throws Exception {
-        return false; //TODO: update webservice and db to work with this
-        /*ObjectMapper objectMapper = new ObjectMapper();
+    private static boolean addLoot(final Session session, final String host) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        byte[] out = objectMapper.writeValueAsBytes(loot);
+        byte[] out = objectMapper.writeValueAsBytes(session);
         int length = out.length;
 
         URL url = new URL("http://" + host + ":8080/loot");
@@ -90,6 +90,6 @@ public class LootDAO {
             os.write(out);
         }
 
-        return 200 == http.getResponseCode();*/
+        return 200 == http.getResponseCode();
     }
 }

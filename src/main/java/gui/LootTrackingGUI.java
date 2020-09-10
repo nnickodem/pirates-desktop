@@ -1,6 +1,8 @@
 package gui;
 
 import Enum.Rarity;
+import ResourceHandlers.FileHandler;
+import ResourceHandlers.LootDAO;
 import dto.Session;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -63,11 +65,11 @@ public class LootTrackingGUI extends JPanel{
         JButton submit = new JButton(GUIUtils.scaleImage("resources/submit.PNG",100,35));
         submit.setPreferredSize(new Dimension(100,35));
         submit.addActionListener(e ->{
-            /*boolean addedLoot = LootDAO.addLoot(loot); TODO: update
+            boolean addedLoot = LootDAO.addLoot(session);
             if(addedLoot) {
                 FileHandler.deleteXML(session.getBoss().getName());
                 mainFrame.createIntroScreen();
-            }*/
+            }
         });
         c.gridx = 4;
         c.gridy = 0;
