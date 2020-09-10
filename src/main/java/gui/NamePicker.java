@@ -1,9 +1,11 @@
 package gui;
 
 import ResourceHandlers.FileHandler;
+import ResourceHandlers.LootDAO;
 import dto.Boss;
 import java.util.Optional;
 
+import dto.Loot;
 import dto.Session;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,21 +19,26 @@ public class NamePicker extends JPanel{
     private final JTextField bossField, userField;
     private final MainFrame mainFrame;
     private final List<Boss> bosses;
-    private boolean shiftToggle = false;
+    private Image backGround;
+
 
     public NamePicker(final MainFrame mainFrame, final String user, final List<Boss> bosses){
         this.bosses = bosses;
         this.mainFrame = mainFrame;
+
+        ImageIcon obj =new ImageIcon("resources/adventure-2528477_1920.jpg");
+        backGround = obj.getImage();
 
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
         Icon icon = new ImageIcon("resources/track.PNG");
 
-        userName = new JLabel("Username: ");
+        userName = new JLabel("User: ");
         userName.setPreferredSize(new Dimension(100,40));
         constraints.insets = new Insets(5,0,5,0);
-        userName.setFont(userName.getFont().deriveFont(16.0f));
+        userName.setFont(userName.getFont().deriveFont(32.0f));
+        userName.setForeground(mainFrame.color);
         constraints.gridx = 0;
         constraints.gridy = 0;
         add(userName, constraints);
@@ -48,7 +55,8 @@ public class NamePicker extends JPanel{
 
         label = new JLabel("Boss: ");
         label.setPreferredSize(new Dimension(100,40));
-        label.setFont(label.getFont().deriveFont(16.0f));
+        label.setFont(label.getFont().deriveFont(32.0f));
+        label.setForeground(mainFrame.color);
         constraints.gridx = 0;
         constraints.gridy = 1;
         add(label, constraints);
@@ -83,28 +91,29 @@ public class NamePicker extends JPanel{
         group.add(noShift);
         group.add(yesShift);
 
-        noShift.addActionListener(e -> shiftToggle = false);
-        noShift.setSelected(true);
-        constraints.gridx = 0;
-        constraints.gridy = 4;
-        add(noShift, constraints);
-
-        yesShift.addActionListener(e -> shiftToggle = true);
-        constraints.gridx = 0;
-        constraints.gridy = 5;
-        add(yesShift, constraints);
-
+        if (bosses.isEmpty()){
+            bossError.setText("Database down, will save locally");
+            bossError.setVisible(true);
+        }
+    }
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        g.drawImage(backGround, 0, 0, null);
     }
 
     private void setBossName(final String bossName, final String user){
         Optional<Boss> boss = bosses.stream().filter(b -> b.getName().equalsIgnoreCase(bossName)).findAny();
-        if (boss.isPresent()){
 
+        if (boss.isPresent()){
             mainFrame.createLootTrackingGUI(FileHandler.getSave(user, boss.get()));
-            //mainFrame.createSecondGUI(user, boss.get(), shiftToggle);
+        }else if (bosses.isEmpty()){
+            Boss fBoss = new Boss(0, bossName);
+            mainFrame.createLootTrackingGUI(FileHandler.getSave(user, fBoss));
         }else{
             bossError.setVisible(true);
         }
+
+
     }
 
 }
