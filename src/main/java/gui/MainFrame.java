@@ -19,7 +19,7 @@ public class MainFrame extends JFrame{
 	private Session session;
 
     public MainFrame() {
-        setIconImage(GUIUtils.scaleImage("resources/yawn.PNG", 100, 100).getImage());
+        setIconImage(GUIUtils.scaleImage("resources/yawn.PNG", 10000, 10000).getImage());
         bosses = LootDAO.getBosses();
         setPreferredSize(new Dimension(600,600));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,7 +30,6 @@ public class MainFrame extends JFrame{
         setVisible(true);
         createIntroScreen();
         setResizable(false);
-
     }
 
     public void createIntroScreen() {
