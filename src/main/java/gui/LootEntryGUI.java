@@ -19,12 +19,13 @@ public class LootEntryGUI extends JPanel {
     private ChestType chestType;
     private Image backGround;
 
+
     public LootEntryGUI(final MainFrame mainFrame){
         this.mouseListeners = new ArrayList<>();
         this.chestType = ChestType.NONE;
         loot = new Loot();
 
-        ImageIcon obj = (GUIUtils.scaleImage("resources/treasure-chest.png",600,250));
+        ImageIcon obj = (GUIUtils.scaleImage("resources/wood-314773_1280 (2).jpg",600,250));
         backGround = obj.getImage();
 
         setLayout(new GridBagLayout());
@@ -53,7 +54,7 @@ public class LootEntryGUI extends JPanel {
             updateChestType();
         });
         lootPouch.setOpaque(false);
-        lootPouch.setForeground(mainFrame.color);
+        lootPouch.setForeground(mainFrame.tan);
         lootPouch.setFont(lootPouch.getFont().deriveFont(24.0f));
         add(lootPouch, c);
 
@@ -64,7 +65,7 @@ public class LootEntryGUI extends JPanel {
             updateChestType();
         });
         lootChest.setOpaque(false);
-        lootChest.setForeground(mainFrame.color);
+        lootChest.setForeground(mainFrame.tan);
         lootChest.setFont(lootPouch.getFont().deriveFont(24.0f));
         add(lootChest, c);
 
@@ -75,7 +76,7 @@ public class LootEntryGUI extends JPanel {
             updateChestType();
         });
         skullChest.setOpaque(false);
-        skullChest.setForeground(mainFrame.color);
+        skullChest.setForeground(mainFrame.tan);
         skullChest.setFont(lootPouch.getFont().deriveFont(24.0f));
         add(skullChest, c);
 
@@ -86,7 +87,7 @@ public class LootEntryGUI extends JPanel {
             updateChestType();
         });
         none.setOpaque(false);
-        none.setForeground(mainFrame.color);
+        none.setForeground(mainFrame.tan);
         none.setFont(lootPouch.getFont().deriveFont(24.0f));
         add(none, c);
 
@@ -95,9 +96,11 @@ public class LootEntryGUI extends JPanel {
         JButton crudeInc = new JButton(GUIUtils.scaleImage("resources/potcobutton2.png",100,35));
         crudeInc.setPreferredSize(new Dimension(100,35));
         crudeInc.setText("Crude: " + loot.getVariable(Rarity.CRUDE));
+        crudeInc.setForeground(mainFrame.color1);
         crudeInc.setHorizontalTextPosition(SwingConstants.CENTER);
         c.gridx = 1;
         c.gridy = 0;
+        c.gridheight = 2;
         add(crudeInc, c);
         LootMouseListener crudeMouseListener = new LootMouseListener(loot, Rarity.CRUDE, crudeInc);
         mouseListeners.add(crudeMouseListener);
@@ -106,6 +109,7 @@ public class LootEntryGUI extends JPanel {
         JButton commonInc = new JButton(GUIUtils.scaleImage("resources/potcobutton2.png",100,35));
         commonInc.setPreferredSize(new Dimension(100,35));
         commonInc.setText("Common: " + loot.getVariable(Rarity.COMMON));
+        commonInc.setForeground(Color.ORANGE);
         commonInc.setHorizontalTextPosition(SwingConstants.CENTER);
         c.gridx = 2;
         c.gridy = 0;
@@ -117,6 +121,7 @@ public class LootEntryGUI extends JPanel {
         JButton rareInc = new JButton(GUIUtils.scaleImage("resources/potcobutton2.png",100,35));
         rareInc.setPreferredSize(new Dimension(100,35));
         rareInc.setText("Rare: " + loot.getVariable(Rarity.RARE));
+        rareInc.setForeground(Color.GREEN);
         rareInc.setHorizontalTextPosition(SwingConstants.CENTER);
         c.gridx = 3;
         c.gridy = 0;
@@ -128,6 +133,7 @@ public class LootEntryGUI extends JPanel {
         JButton famedInc = new JButton(GUIUtils.scaleImage("resources/potcobutton2.png",100,35));
         famedInc.setPreferredSize(new Dimension(100,35));
         famedInc.setText("Famed: " + loot.getVariable(Rarity.FAMED));
+        famedInc.setForeground(Color.BLUE);
         famedInc.setHorizontalTextPosition(SwingConstants.CENTER);
         c.gridx = 1;
         c.gridy = 2;
@@ -139,6 +145,7 @@ public class LootEntryGUI extends JPanel {
         JButton legendaryInc = new JButton(GUIUtils.scaleImage("resources/potcobutton2.png",100,35));
         legendaryInc.setPreferredSize(new Dimension(100,35));
         legendaryInc.setText("Legendary: " + loot.getVariable(Rarity.LEGENDARY));
+        legendaryInc.setForeground(Color.RED);
         legendaryInc.setFont(new Font("Comic Sans",Font.PLAIN, 11));
         legendaryInc.setHorizontalTextPosition(SwingConstants.CENTER);
         c.gridx = 2;

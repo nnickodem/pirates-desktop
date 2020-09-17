@@ -26,7 +26,7 @@ public class NamePicker extends JPanel{
         this.bosses = bosses;
         this.mainFrame = mainFrame;
 
-        ImageIcon obj = new ImageIcon("resources/adventure-2528477_1920.jpg");
+        ImageIcon obj = new ImageIcon(GUIUtils.scaleImage("resources/Gold_1280x1024.jpg", 800, 700).getImage());
         backGround = obj.getImage();
 
         setLayout(new GridBagLayout());
@@ -47,7 +47,6 @@ public class NamePicker extends JPanel{
         userField.setPreferredSize(new Dimension(100,30));
         if (StringUtils.isNotBlank(user)){
             userField.setText(user);
-            userField.setEditable(false);
         }
         constraints.gridx = 1;
         constraints.gridy = 0;
@@ -112,8 +111,5 @@ public class NamePicker extends JPanel{
         }else{
             bossError.setVisible(true);
         }
-
-
     }
-
 }

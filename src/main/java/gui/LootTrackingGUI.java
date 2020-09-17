@@ -15,7 +15,7 @@ public class LootTrackingGUI extends JPanel{
     public LootTrackingGUI(final MainFrame mainFrame, final Session session){
         mainFrame.setTitle("Loot Tracker - " + session.getBoss().getName());
 
-        ImageIcon obj = (GUIUtils.scaleImage("resources/cool-background2.png",600,90));
+        ImageIcon obj = (GUIUtils.scaleImage("resources/wood-314773_1280 (2).jpg",600,100));
         backGround = obj.getImage();
 
         setLayout(new GridBagLayout());
@@ -34,19 +34,20 @@ public class LootTrackingGUI extends JPanel{
         }
         String[] arrLootNum = lootNum.split("/ ");
 
-        String loots = "<html><font color='olive'>" + arrLootNum[0] + "<font color='black'>" + "/ "  + "<font color='orange'>" + arrLootNum[1] + "<font color='black'>" + "/ " +
-                "<font color='green'>" + arrLootNum[2] + "<font color='black'>" + "/ " +
-                "<font color='blue'>" + arrLootNum[3] + "<font color='black'>" + "/ " + "<font color='red'>" + arrLootNum[4] + "</font></html>";
+        String loots = "<html><font color='olive'>" + arrLootNum[0] + "<font color='rgb(255,229,178)'>" + "/ "  + "<font color='orange'>" + arrLootNum[1] + "<font color='rgb(255,229,178)'>" + "/ " +
+                "<font color='green'>" + arrLootNum[2] + "<font color='rgb(255,229,178)'>" + "/ " +
+                "<font color='blue'>" + arrLootNum[3] + "<font color='rgb(255,229,178)'>" + "/ " + "<font color='red'>" + arrLootNum[4] + "</font></html>";
 
         JLabel killDisplay = new JLabel("Kill Count: " + session.getTotalCount(null));
-        killDisplay.setFont(new Font("Century Gothic", Font.BOLD ,18));
+        killDisplay.setForeground(mainFrame.tan);
+        killDisplay.setFont(new Font("Century Gothic", Font.BOLD ,20));
         c.weightx = 0.5;
         c.gridx = 0;
         c.gridy = 0;
         add(killDisplay, c);
 
         JLabel displayLoot = new JLabel(loots);
-        displayLoot.setFont(new Font("Century Gothic", Font.BOLD ,18));
+        displayLoot.setFont(new Font("Century Gothic", Font.BOLD ,20));
         displayLoot.setPreferredSize(new Dimension(160,50));
         c.weightx = 0.5;
         c.gridx = 1;
