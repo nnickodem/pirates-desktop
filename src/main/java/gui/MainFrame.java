@@ -1,5 +1,6 @@
 package gui;
 
+import ResourceHandlers.FileHandler;
 import ResourceHandlers.LootDAO;
 import dto.Boss;
 import dto.Loot;
@@ -7,6 +8,7 @@ import dto.Session;
 import Enum.ChestType;
 
 import java.awt.*;
+import java.io.File;
 import java.util.List;
 import javax.swing.*;
 
@@ -16,6 +18,8 @@ public class MainFrame extends JFrame{
     private List<Boss> bosses;
     private String user;
     public Color color = new Color(0,0,0);
+    public Color color1 = new Color(128,128,0);
+    public static Color tan = new Color(255,229,178);
 	private Session session;
 
     public MainFrame() {
@@ -34,7 +38,7 @@ public class MainFrame extends JFrame{
 
     public void createIntroScreen() {
 
-        NamePicker namePicker = new NamePicker(this, user, bosses);
+        NamePicker namePicker = new NamePicker(this, FileHandler.getUserInfo(), bosses);
 
         remove(namePicker);
 
@@ -52,30 +56,10 @@ public class MainFrame extends JFrame{
 
     }
 
-    public void createSecondGUI(final String user, final Boss boss, final boolean shiftToggle) {
-/*
-        SecondGUI secondGUI = new SecondGUI(this, user, boss, shiftToggle);
-
-        this.user = user;
-
-        remove(secondGUI);
-
-        if (currentPanel != null) {
-            remove(currentPanel);
-            currentPanel.setVisible(false);
-        }
-        add(secondGUI);
-        secondGUI.setVisible(true);
-        setContentPane(secondGUI);
-        revalidate();
-        currentPanel = secondGUI;
-
- */
-
-    }
-
     public void createLootTrackingGUI(final Session session){
         this.session = session;
+
+        FileHandler.saveUserInfo(session.getUser());
 
         LootTrackingGUI lootTrackingGUI = new LootTrackingGUI(this, session);
 
@@ -86,7 +70,7 @@ public class MainFrame extends JFrame{
         int y =(int) (rect.getMinY()) ;
         setLocation(x, y);
         setAlwaysOnTop(true);
-        setPreferredSize(new Dimension(600,90));
+        setPreferredSize(new Dimension(600,100));
         pack();
         remove(lootTrackingGUI);
 

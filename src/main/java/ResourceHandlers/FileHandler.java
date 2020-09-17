@@ -188,4 +188,36 @@ public class FileHandler {
             logger.log(Level.SEVERE, "Failed to save XML!", e);
         }
     }
+
+    public static String getUserInfo() {
+        try {
+            File fXmlFile = new File("config" + saveFilePath);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+            Node node = doc.getElementsByTagName("username").item(0);
+
+            return node.getTextContent();
+        } catch(Exception s) {
+            logger.log(Level.WARNING, "Failed to get username", s);
+            return null;
+        }
+    }
+
+    public static void saveUserInfo(final String userName) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.newDocument();
+
+            Element root = document.createElement("username");
+            root.setTextContent(userName);
+            document.appendChild(root);
+            saveXML(document, "config");
+
+        } catch(Exception s) {
+            logger.log(Level.WARNING, "Failed to save username", s);
+        }
+
+    }
 }
